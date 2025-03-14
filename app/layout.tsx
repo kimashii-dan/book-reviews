@@ -9,7 +9,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Books app",
+  title: "Books reviews",
   description:
     "can we talk about political and economic state of the world right now??🤓",
 };

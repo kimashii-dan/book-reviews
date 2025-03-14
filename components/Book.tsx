@@ -35,14 +35,8 @@ export default async function Book({
     prisma.book.findUnique({ where: { id } }),
     prisma.review.findMany({
       where: { bookId: id },
-      include: {
-        user: true,
-      },
-      orderBy: [
-        {
-          userId: user?.id ? "desc" : "asc",
-        },
-      ],
+      include: { user: true },
+      orderBy: { reviewDate: "desc" },
     }),
   ]);
 
@@ -53,6 +47,10 @@ export default async function Book({
   }
 
   if (!preparedBook) return <div>Book not found</div>;
+
+  reviews.sort((a, b) =>
+    a.userId === user?.id ? -1 : b.userId === user?.id ? 1 : 0
+  );
 
   const hasUserPostedReview = reviews.some(
     (review) => review.userId === user?.id
@@ -147,8 +145,8 @@ export default async function Book({
                   ))}
                 </CarouselContent>
                 <div className="flex justify-center gap-4 mt-4">
-                  <CarouselPrevious className="relative top-0 transform-none left-5" />
-                  <CarouselNext className="relative top-0 transform-none left-5" />
+                  <CarouselPrevious className="relative top-0 transform-none left-40" />
+                  <CarouselNext className="relative top-0 transform-none left-40" />
                 </div>
               </Carousel>
             ) : (

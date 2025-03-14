@@ -16,6 +16,7 @@ export default function StarRating({ rating, handleChange }: StarRatingType) {
           type="button"
           onClick={() => handleChange("rating", star)}
           className="cursor-pointer"
+          autoFocus={false}
         >
           <Star
             className={`w-10 h-10 ${

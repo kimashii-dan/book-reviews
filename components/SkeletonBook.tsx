@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export function SkeletonBookPage() {
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl w-full mx-auto ">
       <Card className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
         <CardContent className="w-full md:w-1/2 flex justify-center">
           <Skeleton className="w-[300px] h-[500px] rounded-lg" />

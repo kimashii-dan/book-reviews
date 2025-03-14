@@ -30,7 +30,7 @@ export default async function SearchedBooks({
   return (
     <div className="grid grid-cols-2 gap-10 w-full justify-center items-center mb-10">
       {books?.map((book: BookType, index) => (
-        <Card key={index} className="flex flex-col items-center p-4">
+        <Card key={index} className="flex flex-col items-center p-4 gap-3">
           <div className="w-full text-center my-4">
             <CardTitle className="text-xl">{book.title}</CardTitle>
             <CardDescription className="text-base">
@@ -51,7 +51,7 @@ export default async function SearchedBooks({
             />
           </div>
 
-          <Button asChild className="w-[225px]">
+          <Button asChild className="w-[225px] mb-4">
             <Link href={`/books/${book.author}/${book.id}`}>
               Go to book page
             </Link>

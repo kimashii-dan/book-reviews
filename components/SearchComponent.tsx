@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "./ui/input";
 
 import { redirect } from "next/navigation";
-import { SubmitButton } from "./SubmitButton";
+import { SearchButton } from "./SearchButton";
 
 export default function SearchComponent() {
   return (
@@ -28,7 +28,7 @@ export default function SearchComponent() {
           placeholder="Search for any book"
           className="p-4 text-base placeholder:text-base"
         />
-        <SubmitButton text="search" />
+        <SearchButton />
       </form>
     </div>
   );

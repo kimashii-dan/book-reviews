@@ -105,7 +105,11 @@ export default function ReviewForm({
                 status={review.status}
                 handleChange={handleChange}
               />
-              <Button type="submit" disabled={isPending}>
+              <Button
+                className="cursor-pointer"
+                type="submit"
+                disabled={isPending}
+              >
                 {isPending ? (
                   <Loader2 className="animate-spin" size={48} />
                 ) : (

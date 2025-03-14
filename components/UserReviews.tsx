@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import prisma from "@/lib/db";
+import Link from "next/link";
 export default async function UserReviews({
   user,
 }: {
@@ -37,45 +38,50 @@ export default async function UserReviews({
         {reviews.map((review) => (
           <CarouselItem
             key={review.id}
-            className="md:basis-1/2 lg:basis-1/3 min-w-[400px] mx-4 mb-6"
+            className="md:basis-1/2 lg:basis-1/3 min-w-[400px] mx-4 my-6"
           >
-            <div className="border p-8 rounded-2xl text-left flex flex-col items-start gap-6 shadow-2xl bg-white">
-              <Image
-                src={review.book.cover || "/images/cover.jpg"}
-                alt={review.book.title}
-                className="w-full h-64 object-cover rounded-xl"
-                width={400}
-                height={500}
-              />
-              <div className="flex flex-col w-full">
-                <h3 className="font-bold text-2xl">{review.book.title}</h3>
-                <p className="text-lg text-gray-600">{review.book.author}</p>
-                <div className="mt-3 flex items-center">
-                  <span className="text-yellow-500 text-xl">
-                    {"★".repeat(review.rating)}
-                  </span>
-                  <span className="text-gray-400 text-xl">
-                    {"★".repeat(5 - review.rating)}
-                  </span>
-                </div>
-                <p className="text-lg mt-3">{review.comment}</p>
-                <div className="flex gap-3 text-lg text-gray-500 mt-3">
-                  <span>{review.status}</span>
-                  {review.status === "reading" && (
-                    <span className="text-blue-500">•</span>
-                  )}
-                  {review.status === "completed" && (
-                    <span className="text-green-500">•</span>
-                  )}
-                  {review.status === "dropped" && (
-                    <span className="text-red-500">•</span>
-                  )}
-                  <span>
-                    {new Date(review.reviewDate).toLocaleDateString()}
-                  </span>
+            <Link
+              className="cursor-pointer"
+              href={`/books/${review.book.author}/${review.book.id}`}
+            >
+              <div className="border p-8 rounded-2xl text-left flex flex-col items-start gap-6 shadow-2xl bg-white transition-all duration-300 transform hover:scale-103">
+                <Image
+                  src={review.book.cover || "/images/cover.jpg"}
+                  alt={review.book.title}
+                  className="w-full h-64 object-cover rounded-xl"
+                  width={400}
+                  height={500}
+                />
+                <div className="flex flex-col w-full">
+                  <h3 className="font-bold text-2xl">{review.book.title}</h3>
+                  <p className="text-lg text-gray-600">{review.book.author}</p>
+                  <div className="mt-3 flex items-center">
+                    <span className="text-yellow-500 text-xl">
+                      {"★".repeat(review.rating)}
+                    </span>
+                    <span className="text-gray-400 text-xl">
+                      {"★".repeat(5 - review.rating)}
+                    </span>
+                  </div>
+                  <p className="text-lg mt-3">{review.comment}</p>
+                  <div className="flex gap-3 text-lg text-gray-500 mt-3">
+                    <span>{review.status}</span>
+                    {review.status === "reading" && (
+                      <span className="text-blue-500">•</span>
+                    )}
+                    {review.status === "completed" && (
+                      <span className="text-green-500">•</span>
+                    )}
+                    {review.status === "dropped" && (
+                      <span className="text-red-500">•</span>
+                    )}
+                    <span>
+                      {new Date(review.reviewDate).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>

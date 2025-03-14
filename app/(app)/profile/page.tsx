@@ -16,15 +16,7 @@ export default async function Profile() {
         <li>Name: {user?.name}</li>
         <li>Email: {user?.email}</li>
       </ul>
-      {/* <form
-        action={async () => {
-          "use server";
-          await authClient.signOut();
-          redirect("/sign-in");
-        }}
-      >
-        <SubmitButton text="Sign out" />
-      </form> */}
+
       <SignOutButton />
     </div>
   );
