@@ -11,7 +11,7 @@ export default function SearchComponent() {
   const handleSearch = useDebouncedCallback((term) => {
     console.log(`Searching... ${term}`);
     startTransition(() => {
-      router.push(`/books?search=${term}`);
+      router.push(`/books?search=${term}&page=1`);
     });
   }, 300);
 
