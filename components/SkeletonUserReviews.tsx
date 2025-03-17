@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/carousel";
 
 export default function SkeletonUserReviews() {
-  // Number of skeleton items to display
   const skeletonItems = Array.from({ length: 3 });
 
   return (
@@ -23,15 +22,12 @@ export default function SkeletonUserReviews() {
             className="md:basis-1/2 lg:basis-1/3 min-w-[400px] mx-4 mb-6"
           >
             <div className="border p-8 rounded-2xl flex flex-col items-start gap-6 shadow-2xl bg-white animate-pulse">
-              {/* Image skeleton */}
               <div className="w-full h-64 bg-gray-200 rounded-xl" />
-              {/* Text skeleton */}
               <div className="flex flex-col w-full gap-2">
                 <div className="h-6 w-1/2 bg-gray-200 rounded" />
                 <div className="h-5 w-1/3 bg-gray-200 rounded" />
                 <div className="h-4 w-full bg-gray-200 rounded" />
                 <div className="h-4 w-3/4 bg-gray-200 rounded" />
-                {/* Stars/status skeleton */}
                 <div className="flex gap-3 mt-3">
                   <div className="h-4 w-1/4 bg-gray-200 rounded" />
                   <div className="h-4 w-1/4 bg-gray-200 rounded" />

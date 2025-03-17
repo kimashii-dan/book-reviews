@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,7 +9,7 @@ export default function RootLayout({
     <div>
       <Header />
       <hr />
-      <main className="w-full min-h-screen">{children}</main>
+      <main className="w-full h-screen">{children}</main>
     </div>
   );
 }

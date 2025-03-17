@@ -1,8 +1,6 @@
-import Book from "@/components/Book";
-import { SkeletonBookPage } from "@/components/SkeletonBook";
+import BookComponent from "@/components/BookComponent";
+import { SkeletonBook } from "@/components/SkeletonBook";
 import BackButton from "@/components/ui/BackButton";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 export default async function BookPage({
   params,
@@ -11,17 +9,12 @@ export default async function BookPage({
 }) {
   const { id, author } = await params;
   const decodedAuthor = decodeURIComponent(author || "");
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const user = session?.user;
   return (
-    <>
+    <div className="flex flex-col justify-center items-center w-4/6 mx-auto gap-10 ">
       <BackButton />
-      <Suspense fallback={<SkeletonBookPage />}>
-        <Book id={id} author={decodedAuthor} user={user} />
+      <Suspense fallback={<SkeletonBook />}>
+        <BookComponent author={decodedAuthor} id={id} />
       </Suspense>
-    </>
+    </div>
   );
 }

@@ -1,28 +1,20 @@
-interface BookType {
-  id: string;
+import { authClient } from "@/lib/auth-client";
+import { Prisma } from "@prisma/client";
+
+interface BookAPIType {
+  key: string;
   title: string;
-  author: string;
-  publishDate: string | null;
-  description?: string | null;
-  cover?: string | null;
+  author_name: string[];
+  first_publish_year: string;
+  cover_i?: string;
 }
 
-interface ReviewType {
-  userId: string;
-  comment: string;
-  rating: number;
-  status: string;
-  bookId: string;
-}
+type BookWithReviewsType = Prisma.BookGetPayload<{
+  include: { reviews: { include: { user: true } } };
+}>;
 
-interface CurrentUser {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  image?: string | null | undefined;
-}
+type CreateReviewType = Prisma.ReviewCreateManyInput;
 
-export type { BookType, ReviewType, CurrentUser };
+type SessionUser = typeof authClient.$Infer.Session.user;
+
+export type { CreateReviewType, BookWithReviewsType, BookAPIType, SessionUser };

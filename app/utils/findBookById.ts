@@ -1,8 +1,8 @@
-import { BookType } from "../types";
+import { BookWithReviewsType } from "../types";
 
 export async function findBookById(
   key: string | undefined
-): Promise<BookType | null> {
+): Promise<BookWithReviewsType | null> {
   if (key === undefined) return null;
 
   try {
@@ -22,6 +22,9 @@ export async function findBookById(
           ? `https://covers.openlibrary.org/b/id/${bookDetails.covers[0]}-L.jpg`
           : "",
       description: fix_desc(bookDetails),
+      reviewCount: 0,
+      totalRating: 0,
+      reviews: [],
     };
   } catch (error) {
     console.error("Error fetching book data:", error);

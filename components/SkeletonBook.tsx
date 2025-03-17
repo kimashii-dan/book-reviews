@@ -1,22 +1,41 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-export function SkeletonBookPage() {
+export function SkeletonBook() {
   return (
-    <div className="max-w-6xl w-full mx-auto ">
-      <Card className="flex flex-col md:flex-row justify-between items-center md:items-start gap-4">
-        <CardContent className="w-full md:w-1/2 flex justify-center">
-          <Skeleton className="w-[300px] h-[500px] rounded-lg" />
-        </CardContent>
+    <div className="w-full max-w-[1000px] mx-auto p-4 space-y-8">
+      {/* Main Card Skeleton */}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 items-start p-4">
+        {/* Image Skeleton */}
+        <div className="w-full">
+          <Skeleton className="w-full pb-[150%] rounded-lg" />
+        </div>
 
-        <CardHeader className="w-full md:w-1/2">
-          <Skeleton className="h-8 w-[200px] mb-4" />
-          <Skeleton className="h-6 w-[150px] mb-4" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-[80%] mb-2" />
-        </CardHeader>
-      </Card>
+        {/* Content Skeleton */}
+        <div className="w-full space-y-8">
+          {/* Title and Author Skeleton */}
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-3/4" />
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+          </div>
+
+          {/* Reviews Section Skeleton */}
+          <div className="space-y-6">
+            <Skeleton className="h-6 w-1/4" />
+            <div className="space-y-4">
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Review Form Skeleton */}
+      <div className="w-full max-w-[1800px] mx-auto p-4">
+        <Skeleton className="h-40 w-full rounded-lg" />
+      </div>
     </div>
   );
 }

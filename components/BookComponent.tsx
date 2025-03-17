@@ -19,95 +19,99 @@ import ReviewForm from "./ReviewForm";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { BookType, CurrentUser } from "@/app/types";
-export default async function Book({
+import { BookWithReviewsType, SessionUser } from "@/app/types";
+import { checkServerSession } from "@/app/actions";
+
+export default async function BookComponent({
   id,
   author,
-  user,
 }: {
   id: string | undefined;
   author: string;
-  user: CurrentUser | undefined;
 }) {
   if (!id || !author) return <div>Book not found</div>;
 
-  const [book, reviews] = await Promise.all([
-    prisma.book.findUnique({ where: { id } }),
-    prisma.review.findMany({
-      where: { bookId: id },
-      include: { user: true },
-      orderBy: { reviewDate: "desc" },
+  const [currentUser, bookWithReviews]: [
+    SessionUser | undefined,
+    BookWithReviewsType | null
+  ] = await Promise.all([
+    checkServerSession(),
+    prisma.book.findUnique({
+      where: { id },
+      include: {
+        reviews: {
+          include: { user: true },
+          orderBy: { reviewDate: "desc" },
+        },
+      },
     }),
   ]);
 
-  let preparedBook: BookType | null = book;
+  const book: BookWithReviewsType | null =
+    bookWithReviews || (await findBookById(id));
 
-  if (!book) {
-    preparedBook = await findBookById(id);
-  }
+  if (!book) return <div>Book not found</div>;
 
-  if (!preparedBook) return <div>Book not found</div>;
-
-  reviews.sort((a, b) =>
-    a.userId === user?.id ? -1 : b.userId === user?.id ? 1 : 0
+  const sortedReviews = book.reviews.sort((a, b) =>
+    a.userId === currentUser?.id ? -1 : b.userId === currentUser?.id ? 1 : 0
   );
-
-  const hasUserPostedReview = reviews.some(
-    (review) => review.userId === user?.id
+  const hasUserPostedReview = book?.reviews.some(
+    (review) => review.userId === currentUser?.id
   );
 
   return (
     <>
-      <div className="max-w-6xl mx-auto">
-        <Card className="flex flex-row justify-between items-center gap-4">
-          <CardContent className=" w-1/2 flex justify-center">
+      <div className="w-full max-w-[1800px] mx-auto p-4">
+        <Card className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 items-start p-4">
+          <CardContent className="relative w-full pb-[150%] mb-4">
             <Image
-              src={preparedBook.cover || "/images/cover.jpg"}
-              alt="book cover"
-              width={300}
-              height={500}
-              quality={50}
-              className=""
+              src={book.cover || "/images/cover.jpg"}
+              alt={`Cover of ${book.title}`}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              quality={75}
               placeholder="blur"
               blurDataURL="/images/placeholder.jpg"
             />
           </CardContent>
-          <div className="flex flex-col w-1/2">
-            <CardHeader className="">
-              <CardTitle className="text-3xl">{preparedBook.title}</CardTitle>
-              <CardDescription>
-                {author} ({preparedBook.publishDate})
+
+          <div className="w-full">
+            <CardHeader>
+              <CardTitle className="text-3xl w-full truncate">
+                {book.title}
+              </CardTitle>
+              <CardDescription className="w-full">
+                {author} ({book.publishDate})
               </CardDescription>
-              <CardContent className="p-0 my-4">
-                {preparedBook.description}
+              <CardContent className="p-0 my-4 w-full">
+                {book.description}
               </CardContent>
             </CardHeader>
-            {reviews.length !== 0 ? (
+
+            {book.reviews.length !== 0 ? (
               <Carousel
-                opts={{
-                  align: "start",
-                }}
+                opts={{ align: "start" }}
                 orientation="vertical"
                 className="w-full"
               >
-                <CarouselContent className="my-5 h-[200px] mb-3">
-                  {reviews.map((review) => (
-                    <CarouselItem
-                      key={review.id}
-                      className="md:basis-1/2 mx-4 "
-                    >
-                      <Card className="gap-0">
+                <CarouselContent className="my-5 h-[225px] mb-3">
+                  {sortedReviews.map((review) => (
+                    <CarouselItem key={review.id} className="basis-1/2">
+                      <Card className="h-full">
                         <CardHeader>
-                          {review.user.id === user?.id ? (
+                          {review.user.id === currentUser?.id ? (
                             <CardTitle className="text-xl">
                               Your review
                             </CardTitle>
                           ) : (
                             <>
-                              <CardTitle>{review.user.name}</CardTitle>
-                              <CardDescription>
+                              <CardTitle className="w-full truncate">
+                                {review.user.name}
+                              </CardTitle>
+                              <CardDescription className="w-full truncate">
                                 {review.user.email}
-                              </CardDescription>{" "}
+                              </CardDescription>
                             </>
                           )}
                         </CardHeader>
@@ -120,8 +124,10 @@ export default async function Book({
                               {"★".repeat(5 - review.rating)}
                             </span>
                           </div>
-                          <CardTitle>{review.comment}</CardTitle>
-                          <div className="flex gap-3 text-lg -500 mt-3">
+                          <CardTitle className="w-full truncate">
+                            {review.comment}
+                          </CardTitle>
+                          <div className="flex gap-3 text-lg mt-3 flex-wrap">
                             <span className="text-gray-600">
                               {review.status}
                             </span>
@@ -134,7 +140,6 @@ export default async function Book({
                             {review.status === "dropped" && (
                               <span className="text-red-500">•</span>
                             )}
-
                             <span>
                               {new Date(review.reviewDate).toLocaleDateString()}
                             </span>
@@ -145,8 +150,8 @@ export default async function Book({
                   ))}
                 </CarouselContent>
                 <div className="flex justify-center gap-4 mt-4">
-                  <CarouselPrevious className="relative top-0 transform-none left-40" />
-                  <CarouselNext className="relative top-0 transform-none left-40" />
+                  <CarouselPrevious className="relative top-0 transform-none left-35" />
+                  <CarouselNext className="relative top-0 transform-none left-35" />
                 </div>
               </Carousel>
             ) : (
@@ -158,21 +163,26 @@ export default async function Book({
         </Card>
       </div>
 
-      <div className="w-full relative">
-        <div className={`${!user || hasUserPostedReview ? "blur-sm" : ""}`}>
-          <ReviewForm book={preparedBook} author={author} />
+      <div className="w-full max-w-[1800px] mx-auto p-4 relative">
+        <div
+          className={`${!currentUser || hasUserPostedReview ? "blur-sm" : ""}`}
+        >
+          <ReviewForm book={book} author={author} />
         </div>
 
-        {!user && (
+        {!currentUser && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <Button asChild className="py-6 px-4 text-base">
+            <Button
+              asChild
+              className="py-6 px-4 text-base w-full max-w-[300px]"
+            >
               <Link href="/sign-in">Please login to post a review</Link>
             </Button>
           </div>
         )}
         {hasUserPostedReview && (
-          <div className="absolute inset-0 flex items-center justify-center  rounded-lg">
-            <p className="text-black text-lg font-semibold">
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg">
+            <p className="text-black text-lg font-semibold text-center w-full">
               You have already posted a review for this book.
             </p>
           </div>

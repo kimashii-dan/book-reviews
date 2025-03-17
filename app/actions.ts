@@ -1,8 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 import prisma from "@/lib/db";
-import { BookType, ReviewType } from "./types";
+import { BookWithReviewsType, CreateReviewType, SessionUser } from "./types";
 
-export async function submitReview(bookData: BookType, reviewData: ReviewType) {
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
+import { User } from "@prisma/client";
+
+export async function submitReview(
+  bookData: BookWithReviewsType,
+  reviewData: CreateReviewType
+) {
   try {
     const book = await prisma.book.upsert({
       where: { id: bookData.id },
@@ -55,9 +64,24 @@ export async function submitReview(bookData: BookType, reviewData: ReviewType) {
       },
     });
 
+    revalidatePath("/");
     return { success: true, message: "Review submitted successfully!" };
   } catch (error) {
     console.error("Error submitting review:", error);
     return { success: false, message: "Failed to submit review." };
   }
 }
+
+export const checkServerSession = async (): Promise<
+  SessionUser | undefined
+> => {
+  "use server";
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    return session?.user;
+  } catch (error) {
+    return undefined;
+  }
+};

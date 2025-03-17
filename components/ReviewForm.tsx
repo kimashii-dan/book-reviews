@@ -17,19 +17,19 @@ import { submitReview } from "@/app/actions";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { BookType } from "@/app/types";
+import { BookWithReviewsType } from "@/app/types";
 
 export type ReviewFormType = {
   rating: number;
   comment: string;
-  status: "reading" | "completed" | "dropped";
+  status: string;
 };
 
 export default function ReviewForm({
   book,
   author,
 }: {
-  book: BookType;
+  book: BookWithReviewsType;
   author: string;
 }) {
   const router = useRouter();
@@ -61,6 +61,9 @@ export default function ReviewForm({
       publishDate: book.publishDate,
       description: book.description,
       cover: book.cover,
+      totalRating: book.totalRating,
+      reviewCount: book.reviewCount,
+      reviews: book.reviews,
     };
 
     const reviewData = {
@@ -99,6 +102,7 @@ export default function ReviewForm({
               className="h-28"
               placeholder="Write comment..."
               onChange={(e) => handleChange("comment", e.target.value)}
+              autoFocus={false}
             />
             <div className="flex justify-between">
               <StatusSelector

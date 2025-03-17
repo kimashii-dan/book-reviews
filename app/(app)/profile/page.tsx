@@ -1,14 +1,10 @@
+import { checkServerSession } from "@/app/actions";
+import { SessionUser } from "@/app/types";
 import SignOutButton from "@/components/SignOutButton";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import React from "react";
 
 export default async function Profile() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const user = session?.user;
+  const user: SessionUser | undefined = await checkServerSession();
   return (
     <div className="mt-10 text-center">
       <h1 className="text-2xl font-bold">Profile</h1>

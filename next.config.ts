@@ -8,16 +8,6 @@ const nextConfig: NextConfig = {
         hostname: "covers.openlibrary.org",
         pathname: "**",
       },
-      {
-        protocol: "https",
-        hostname: "cdn-icons-png.flaticon.com",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "unsplash.com",
-        pathname: "**",
-      },
     ],
   },
 };

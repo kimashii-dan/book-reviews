@@ -1,4 +1,4 @@
-import { CurrentUser } from "@/app/types";
+import { SessionUser } from "@/app/types";
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +12,7 @@ import Link from "next/link";
 export default async function UserReviews({
   user,
 }: {
-  user: CurrentUser | undefined;
+  user: SessionUser | undefined;
 }) {
   const reviews = await prisma.review.findMany({
     where: {
@@ -47,10 +47,14 @@ export default async function UserReviews({
               <div className="border p-8 rounded-2xl text-left flex flex-col items-start gap-6 shadow-2xl bg-white transition-all duration-300 transform hover:scale-103">
                 <Image
                   src={review.book.cover || "/images/cover.jpg"}
-                  alt={review.book.title}
+                  alt={`Cover of ${review.book.title}`}
                   className="w-full h-64 object-cover rounded-xl"
                   width={400}
                   height={500}
+                  quality={50}
+                  placeholder="blur"
+                  blurDataURL="/images/placeholder.jpg"
+                  loading="lazy"
                 />
                 <div className="flex flex-col w-full">
                   <h3 className="font-bold text-2xl">{review.book.title}</h3>

@@ -10,7 +10,7 @@ import {
 import { ReviewFormType } from "./ReviewForm";
 
 type StatusSelectorProps = {
-  status: "reading" | "completed" | "dropped";
+  status: string;
   handleChange: (name: keyof ReviewFormType, value: string | number) => void;
 };
 
