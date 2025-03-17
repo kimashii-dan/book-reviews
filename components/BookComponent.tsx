@@ -76,18 +76,27 @@ export default async function BookComponent({
             />
           </CardContent>
 
-          <div className="w-full">
-            <CardHeader>
-              <CardTitle className="text-3xl w-full truncate">
-                {book.title}
-              </CardTitle>
-              <CardDescription className="w-full">
+          <div className="w-full flex flex-col justify-around h-full">
+            <CardHeader className=" p-0 flex flex-col gap-5">
+              <CardTitle className="text-3xl w-full">{book.title}</CardTitle>
+              <CardDescription className="w-full text-xl italic ">
                 {author} ({book.publishDate})
               </CardDescription>
-              <CardContent className="p-0 my-4 w-full">
-                {book.description}
+              <CardContent className="p-0 w-full flex justify-between items-center text-lg">
+                <div className="flex items-center gap-2">
+                  <p>Average rating:</p>
+                  <p className="font-semibold">
+                    {book.averageRating}
+                    <span className="text-yellow-500 ml-1">★</span>
+                  </p>
+                </div>
+                <p>
+                  Total reviews: <span>{book.reviewCount}</span>
+                </p>
               </CardContent>
             </CardHeader>
+
+            <CardContent className="p-0 w-full">{book.description}</CardContent>
 
             {book.reviews.length !== 0 ? (
               <Carousel
@@ -98,7 +107,7 @@ export default async function BookComponent({
                 <CarouselContent className="my-5 h-[225px] mb-3">
                   {sortedReviews.map((review) => (
                     <CarouselItem key={review.id} className="basis-1/2">
-                      <Card className="h-full">
+                      <Card className="h-full gap-3">
                         <CardHeader>
                           {review.user.id === currentUser?.id ? (
                             <CardTitle className="text-xl">

@@ -24,6 +24,7 @@ export async function findBookById(
       description: fix_desc(bookDetails),
       reviewCount: 0,
       totalRating: 0,
+      averageRating: 0,
       reviews: [],
     };
   } catch (error) {

@@ -8,15 +8,7 @@ export default async function Page() {
   const user: SessionUser | undefined = await checkServerSession();
 
   if (user) {
-    return (
-      <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
-        <div className="mb-10 mt-5 w-full">
-          <h1 className="text-3xl font-bold">Welcome {user?.name}, </h1>
-          <h2 className="text-2xl">Here&apos;s your reviews</h2>
-        </div>
-        <UserReviews user={user} />
-      </div>
-    );
+    return <UserReviews user={user} />;
   } else {
     return (
       <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">

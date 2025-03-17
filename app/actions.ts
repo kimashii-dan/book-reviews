@@ -6,7 +6,6 @@ import { BookWithReviewsType, CreateReviewType, SessionUser } from "./types";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { User } from "@prisma/client";
 
 export async function submitReview(
   bookData: BookWithReviewsType,
@@ -45,27 +44,20 @@ export async function submitReview(
     const updatedBook = await prisma.book.update({
       where: { id: book.id },
       data: {
-        totalRating: {
-          increment: reviewData.rating,
-        },
-        reviewCount: {
-          increment: 1,
+        totalRating: { increment: reviewData.rating },
+        reviewCount: { increment: 1 },
+        averageRating: {
+          set: (book.totalRating + reviewData.rating) / (book.reviewCount + 1),
         },
       },
     });
 
-    const averageRating = updatedBook.totalRating / updatedBook.reviewCount;
-    const flooredRating = Math.floor(averageRating);
-
-    await prisma.book.update({
-      where: { id: book.id },
-      data: {
-        totalRating: flooredRating,
-      },
-    });
-
-    revalidatePath("/");
-    return { success: true, message: "Review submitted successfully!" };
+    revalidatePath(`/books/${book.id}`);
+    return {
+      success: true,
+      message: "Review submitted successfully!",
+      averageRating: updatedBook.averageRating,
+    };
   } catch (error) {
     console.error("Error submitting review:", error);
     return { success: false, message: "Failed to submit review." };

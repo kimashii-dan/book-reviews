@@ -9,11 +9,10 @@ export default function SearchComponent() {
   const [isPending, startTransition] = useTransition();
 
   const handleSearch = useDebouncedCallback((term) => {
-    console.log(`Searching... ${term}`);
     startTransition(() => {
       router.push(`/books?search=${term}&page=1`);
     });
-  }, 300);
+  }, 600);
 
   return (
     <>

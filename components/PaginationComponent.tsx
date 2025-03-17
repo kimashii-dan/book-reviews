@@ -13,9 +13,10 @@ import { useRouter } from "next/navigation";
 export function PaginationComponent({
   currentPage,
   baseUrl,
+  totalPages,
 }: {
   currentPage: number;
-
+  totalPages: number;
   baseUrl: string;
 }) {
   const router = useRouter();
@@ -29,12 +30,14 @@ export function PaginationComponent({
   return (
     <Pagination className="mb-10">
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            className="cursor-pointer text-lg"
-            onClick={() => handlePageChange(prevPage)}
-          />
-        </PaginationItem>
+        {currentPage !== 1 && (
+          <PaginationItem>
+            <PaginationPrevious
+              className="cursor-pointer text-lg"
+              onClick={() => handlePageChange(prevPage)}
+            />
+          </PaginationItem>
+        )}
 
         {prevPage > 0 && (
           <PaginationItem>
@@ -56,12 +59,14 @@ export function PaginationComponent({
           </PaginationLink>
         </PaginationItem>
 
-        <PaginationItem>
-          <PaginationNext
-            className="cursor-pointer text-lg"
-            onClick={() => handlePageChange(nextPage)}
-          />
-        </PaginationItem>
+        {currentPage !== totalPages && (
+          <PaginationItem>
+            <PaginationNext
+              className="cursor-pointer text-lg"
+              onClick={() => handlePageChange(nextPage)}
+            />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   );

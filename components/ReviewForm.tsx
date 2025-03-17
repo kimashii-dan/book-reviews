@@ -63,6 +63,7 @@ export default function ReviewForm({
       cover: book.cover,
       totalRating: book.totalRating,
       reviewCount: book.reviewCount,
+      averageRating: book.averageRating,
       reviews: book.reviews,
     };
 

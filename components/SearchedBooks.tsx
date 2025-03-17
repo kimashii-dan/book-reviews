@@ -20,7 +20,6 @@ export default async function SearchedBooks({
 
   if (search && page) {
     const offset = (page - 1) * limit;
-    console.log("offset: ", offset);
     const data = await findBooksByTitle(search, offset);
     books = data?.books || null;
     totalResults = data?.totalResults || 0;
@@ -56,7 +55,7 @@ export default async function SearchedBooks({
         {books?.map((book: Book, index) => (
           <Card
             key={index}
-            className="flex flex-col items-center p-4 gap-4 w-full"
+            className="flex flex-col items-center p-4 gap-4 w-full mb-4"
           >
             <div className="w-full text-center">
               <CardTitle className="text-xl truncate">{book.title}</CardTitle>
@@ -79,16 +78,33 @@ export default async function SearchedBooks({
               />
             </div>
 
-            <Button asChild className="w-full max-w-[225px]">
-              <Link href={`/books/${book.author}/${book.id}`}>
-                Go to book page
-              </Link>
-            </Button>
+            {!book.averageRating ? (
+              <Button asChild className="w-full max-w-[225px]">
+                <Link href={`/books/${book.author}/${book.id}`}>
+                  Go to book page
+                </Link>
+              </Button>
+            ) : (
+              <div
+                className={"w-full flex flex-row justify-between items-center"}
+              >
+                <Button asChild className="w-full max-w-[225px]">
+                  <Link href={`/books/${book.author}/${book.id}`}>
+                    Go to book page
+                  </Link>
+                </Button>
+                <p className="text-gray-600">
+                  {book.averageRating}
+                  <span className="text-yellow-500 ml-1">★</span>
+                </p>
+              </div>
+            )}
           </Card>
         ))}
       </div>
       {search && (
         <PaginationComponent
+          totalPages={totalResults / limit}
           currentPage={Number(page)}
           baseUrl={`/books?search=${search}`}
         />

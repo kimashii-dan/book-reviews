@@ -75,6 +75,7 @@ model Book {
   publishDate String?
   reviewCount Int      @default(0)
   totalRating Int      @default(0)
+  averageRating Float @default(0)
   reviews     Review[]
 
   @@map("book")

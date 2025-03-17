@@ -13,14 +13,12 @@ export default async function Books(props: {
   const searchParams = await props.searchParams;
   const search = searchParams?.search || "";
   const page = Number(searchParams?.page || 1);
-  console.log("page:", page);
-  console.log("search:", search);
 
   return (
     <div className="flex flex-col justify-center items-center w-4/6 mx-auto gap-10 ">
       <SearchComponent />
 
-      <Suspense key={search && page} fallback={<SkeletonBookList />}>
+      <Suspense key={`${search}-${page}`} fallback={<SkeletonBookList />}>
         <SearchedBooks search={search} page={page} />
       </Suspense>
     </div>
