@@ -62,7 +62,7 @@ export default async function UserReviews({
             >
               <Link
                 className="cursor-pointer"
-                href={`/books/${review.book.author}/${review.book.id}`}
+                href={`/books/${review.book.id}`}
               >
                 <div className="border p-8 rounded-2xl text-left flex flex-col items-start gap-6 shadow-2xl bg-white transition-all duration-300 transform hover:scale-103">
                   <Image

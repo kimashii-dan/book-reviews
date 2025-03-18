@@ -4,7 +4,8 @@ import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useTransition } from "react";
-export default function SearchComponent() {
+import BackButton from "./ui/BackButton";
+export default function SearchComponent({ search }: { search: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -12,11 +13,11 @@ export default function SearchComponent() {
     startTransition(() => {
       router.push(`/books?search=${term}&page=1`);
     });
-  }, 600);
+  }, 400);
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center w-full mt-10 mb-5">
+      <div className="flex flex-row justify-between items-center w-full mt-10">
         <div className="">
           <h1 className="text-4xl font-bold">Books</h1>
         </div>
@@ -42,6 +43,11 @@ export default function SearchComponent() {
           )}
         </div>
       </div>
+      {search && (
+        <div className="w-full text-left">
+          <BackButton />
+        </div>
+      )}
     </>
   );
 }

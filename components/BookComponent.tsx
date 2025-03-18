@@ -1,4 +1,4 @@
-import { findBookById } from "@/app/utils/findBookById";
+import { findGoogleBookById } from "@/app/utils/findBookById";
 import React from "react";
 import {
   Card,
@@ -24,12 +24,10 @@ import { checkServerSession } from "@/app/actions";
 
 export default async function BookComponent({
   id,
-  author,
 }: {
   id: string | undefined;
-  author: string;
 }) {
-  if (!id || !author) return <div>Book not found</div>;
+  if (!id) return <div>Book not found</div>;
 
   const [currentUser, bookWithReviews]: [
     SessionUser | undefined,
@@ -48,7 +46,7 @@ export default async function BookComponent({
   ]);
 
   const book: BookWithReviewsType | null =
-    bookWithReviews || (await findBookById(id));
+    bookWithReviews || (await findGoogleBookById(id));
 
   if (!book) return <div>Book not found</div>;
 
@@ -61,7 +59,7 @@ export default async function BookComponent({
 
   return (
     <>
-      <div className="w-full max-w-[1800px] mx-auto p-4">
+      <div className="w-full max-w-[1800px] mx-auto">
         <Card className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 items-start p-4">
           <CardContent className="relative w-full pb-[150%] mb-4">
             <Image
@@ -70,9 +68,10 @@ export default async function BookComponent({
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
-              quality={75}
+              quality={100}
               placeholder="blur"
               blurDataURL="/images/placeholder.jpg"
+              loading="lazy"
             />
           </CardContent>
 
@@ -80,7 +79,7 @@ export default async function BookComponent({
             <CardHeader className=" p-0 flex flex-col gap-5">
               <CardTitle className="text-3xl w-full">{book.title}</CardTitle>
               <CardDescription className="w-full text-xl italic ">
-                {author} ({book.publishDate})
+                {book.author} ({book.publishDate})
               </CardDescription>
               <CardContent className="p-0 w-full flex justify-between items-center text-lg">
                 <div className="flex items-center gap-2">
@@ -176,7 +175,7 @@ export default async function BookComponent({
         <div
           className={`${!currentUser || hasUserPostedReview ? "blur-sm" : ""}`}
         >
-          <ReviewForm book={book} author={author} />
+          <ReviewForm book={book} />
         </div>
 
         {!currentUser && (

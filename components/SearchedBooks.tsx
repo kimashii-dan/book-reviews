@@ -1,4 +1,4 @@
-import { findBooksByTitle } from "@/app/utils/findBooksByTitle";
+import { findGoogleBooksByTitle } from "@/app/utils/findBooksByTitle";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import prisma from "@/lib/db";
@@ -20,7 +20,7 @@ export default async function SearchedBooks({
 
   if (search && page) {
     const offset = (page - 1) * limit;
-    const data = await findBooksByTitle(search, offset);
+    const data = await findGoogleBooksByTitle(search, offset);
     books = data?.books || null;
     totalResults = data?.totalResults || 0;
   } else {
@@ -71,7 +71,7 @@ export default async function SearchedBooks({
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
-                quality={75}
+                quality={100}
                 placeholder="blur"
                 blurDataURL="/images/placeholder.jpg"
                 loading="lazy"
@@ -80,18 +80,14 @@ export default async function SearchedBooks({
 
             {!book.averageRating ? (
               <Button asChild className="w-full max-w-[225px]">
-                <Link href={`/books/${book.author}/${book.id}`}>
-                  Go to book page
-                </Link>
+                <Link href={`/books/${book.id}`}>Go to book page</Link>
               </Button>
             ) : (
               <div
                 className={"w-full flex flex-row justify-between items-center"}
               >
                 <Button asChild className="w-full max-w-[225px]">
-                  <Link href={`/books/${book.author}/${book.id}`}>
-                    Go to book page
-                  </Link>
+                  <Link href={`/books/${book.id}`}>Go to book page</Link>
                 </Button>
                 <p className="text-gray-600">
                   {book.averageRating}

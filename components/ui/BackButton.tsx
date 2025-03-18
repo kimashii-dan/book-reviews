@@ -7,14 +7,12 @@ export default function BackButton() {
   const router = useRouter();
 
   return (
-    <div className="w-full my-7">
-      <Button
-        className="cursor-pointer"
-        onClick={() => router.back()}
-        variant="outline"
-      >
-        ← Back
-      </Button>
-    </div>
+    <Button
+      className="cursor-pointer"
+      onClick={() => router.back()}
+      variant="outline"
+    >
+      ← Back
+    </Button>
   );
 }

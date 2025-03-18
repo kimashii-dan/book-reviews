@@ -25,13 +25,7 @@ export type ReviewFormType = {
   status: string;
 };
 
-export default function ReviewForm({
-  book,
-  author,
-}: {
-  book: BookWithReviewsType;
-  author: string;
-}) {
+export default function ReviewForm({ book }: { book: BookWithReviewsType }) {
   const router = useRouter();
   const [review, setReview] = useState<ReviewFormType>({
     rating: 0,
@@ -57,7 +51,7 @@ export default function ReviewForm({
     const bookData = {
       id: book.id,
       title: book.title,
-      author: author,
+      author: book.author,
       publishDate: book.publishDate,
       description: book.description,
       cover: book.cover,

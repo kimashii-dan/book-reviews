@@ -7,13 +7,15 @@ export default async function BookPage({
 }: {
   params: Promise<{ [key: string]: string | undefined }>;
 }) {
-  const { id, author } = await params;
-  const decodedAuthor = decodeURIComponent(author || "");
+  const { id } = await params;
   return (
     <div className="flex flex-col justify-center items-center w-4/6 mx-auto  ">
-      <BackButton />
+      <div className="w-full text-left my-5">
+        <BackButton />
+      </div>
+
       <Suspense fallback={<SkeletonBook />}>
-        <BookComponent author={decodedAuthor} id={id} />
+        <BookComponent id={id} />
       </Suspense>
     </div>
   );
