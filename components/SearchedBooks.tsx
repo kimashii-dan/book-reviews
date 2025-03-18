@@ -86,7 +86,7 @@ export default async function SearchedBooks({
               <div
                 className={"w-full flex flex-row justify-between items-center"}
               >
-                <Button asChild className="w-full max-w-[225px]">
+                <Button asChild className="w-full max-w-[80%]">
                   <Link href={`/books/${book.id}`}>Go to book page</Link>
                 </Button>
                 <p className="text-gray-600">

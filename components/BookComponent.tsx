@@ -101,7 +101,7 @@ export default async function BookComponent({
               <Carousel
                 opts={{ align: "start" }}
                 orientation="vertical"
-                className="w-full"
+                className="w-full duration-100"
               >
                 <CarouselContent className="my-5 h-[225px] mb-3">
                   {sortedReviews.map((review) => (
@@ -113,14 +113,24 @@ export default async function BookComponent({
                               Your review
                             </CardTitle>
                           ) : (
-                            <>
-                              <CardTitle className="w-full truncate">
-                                {review.user.name}
-                              </CardTitle>
-                              <CardDescription className="w-full truncate">
-                                {review.user.email}
-                              </CardDescription>
-                            </>
+                            <div className="flex flex-row items-center gap-4">
+                              <div className="w-15 h-15 rounded-full overflow-hidden relative">
+                                <Image
+                                  src={review.user.image || "/user.svg"}
+                                  alt="Your avatar"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="">
+                                <CardTitle className="w-full truncate">
+                                  {review.user.name}
+                                </CardTitle>
+                                <CardDescription className="w-full truncate">
+                                  {review.user.email}
+                                </CardDescription>
+                              </div>
+                            </div>
                           )}
                         </CardHeader>
                         <CardContent>
@@ -164,7 +174,7 @@ export default async function BookComponent({
               </Carousel>
             ) : (
               <div className="px-6 mt-4 text-lg text-gray-600">
-                <p>There&apos;s no reviews yet. Be first to post a review!</p>
+                <p>There are no reviews yet. Be first to review!</p>
               </div>
             )}
           </div>

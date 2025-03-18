@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
-
+import Image from "next/image";
 export default function Header() {
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
@@ -42,7 +42,18 @@ export default function Header() {
                   pathname === "/profile" ? "text-black" : "text-gray-400"
                 }
               >
-                <UserCircle2 size={35} />
+                {session.user.image ? (
+                  <div className="w-10 h-10 rounded-full overflow-hidden relative">
+                    <Image
+                      src={session.user.image}
+                      alt="Your avatar"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <UserCircle2 size={35} />
+                )}
               </Link>
             ) : (
               <Button className=" text-base" variant="outline" asChild>

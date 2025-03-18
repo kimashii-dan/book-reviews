@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
         hostname: "books.google.com",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };
