@@ -6,7 +6,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import React from "react";
 import Image from "next/image";
-import { UserCircle2 } from "lucide-react";
+import { Check, Mail, UserCircle2 } from "lucide-react";
 import cloudinary from "@/lib/cloudinary";
 import { extractPublicId } from "@/app/utils/extractPublicId";
 import { User } from "@prisma/client";
@@ -35,8 +35,9 @@ export default async function Profile() {
   }
 
   return (
-    <div className="flex flex-row justify-between w-5/12 mx-auto py-8">
-      <div className="flex justify-center flex-col gap-4">
+    <div className="flex flex-row justify-between w-[650px] mx-auto py-8">
+      <div className="flex justify-center flex-col gap-7 ">
+        <h1 className="text-3xl font-bold">Profile</h1>
         <div className="w-50 h-50 rounded-full overflow-hidden relative">
           {user?.image ? (
             <Image
@@ -51,13 +52,33 @@ export default async function Profile() {
         </div>
         <AvatarUploader onUploadSuccess={saveAvatar} />
       </div>
-      <div className="flex flex-col gap-8 text-left">
-        <h1 className="text-2xl font-bold">Profile</h1>
-        <ul>
-          <li>Name: {user?.name}</li>
-          <li>Email: {user?.email}</li>
+      <div className="flex flex-col gap-10 text-left justify-center">
+        <ul className="flex flex-col gap-5">
+          <li className="text-2xl font-semibold">{user?.name}</li>
+          <li>{user?.email}</li>
+          <li>
+            {user?.emailVerified ? (
+              <p className="flex">
+                Account verified
+                <span className="ml-1">
+                  <Check color="green" />
+                </span>
+              </p>
+            ) : (
+              <>
+                <p className="flex text-base">
+                  Email not verified
+                  <span className="ml-1">
+                    <Mail color="red" />
+                  </span>
+                </p>
+                <p className="text-sm text-gray-500">
+                  Check your email to verify account
+                </p>
+              </>
+            )}
+          </li>
         </ul>
-
         <SignOutButton />
       </div>
     </div>

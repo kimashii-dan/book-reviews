@@ -49,6 +49,9 @@ export default function Header() {
                       alt="Your avatar"
                       fill
                       className="object-cover"
+                      priority
+                      placeholder="blur"
+                      blurDataURL="/user.svg"
                     />
                   </div>
                 ) : (

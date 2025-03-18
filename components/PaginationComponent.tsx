@@ -33,7 +33,7 @@ export function PaginationComponent({
         {currentPage !== 1 && (
           <PaginationItem>
             <PaginationPrevious
-              className="cursor-pointer text-lg"
+              className="text-lg"
               onClick={() => handlePageChange(prevPage)}
             />
           </PaginationItem>
@@ -62,7 +62,7 @@ export function PaginationComponent({
         {currentPage !== totalPages && (
           <PaginationItem>
             <PaginationNext
-              className="cursor-pointer text-lg"
+              className=" text-lg"
               onClick={() => handlePageChange(nextPage)}
             />
           </PaginationItem>

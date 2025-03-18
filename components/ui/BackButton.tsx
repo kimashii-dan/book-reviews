@@ -7,11 +7,7 @@ export default function BackButton() {
   const router = useRouter();
 
   return (
-    <Button
-      className="cursor-pointer"
-      onClick={() => router.back()}
-      variant="outline"
-    >
+    <Button onClick={() => router.back()} variant="outline">
       ← Back
     </Button>
   );

@@ -104,11 +104,7 @@ export default function ReviewForm({ book }: { book: BookWithReviewsType }) {
                 status={review.status}
                 handleChange={handleChange}
               />
-              <Button
-                className="cursor-pointer"
-                type="submit"
-                disabled={isPending}
-              >
+              <Button className="" type="submit" disabled={isPending}>
                 {isPending ? (
                   <Loader2 className="animate-spin" size={48} />
                 ) : (

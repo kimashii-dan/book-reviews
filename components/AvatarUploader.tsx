@@ -24,11 +24,7 @@ export function AvatarUploader({ onUploadSuccess }: AvatarUploaderProps) {
     >
       {({ open }) => {
         return (
-          <Button
-            className="cursor-pointer"
-            variant="outline"
-            onClick={() => open()}
-          >
+          <Button variant="outline" onClick={() => open()}>
             Upload Avatar
           </Button>
         );

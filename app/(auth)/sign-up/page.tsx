@@ -56,7 +56,9 @@ export default function SignUp() {
         },
         onSuccess: () => {
           form.reset();
-          toast("Successful sign-up");
+          toast(
+            "Successful sign-up! Verification link has been sent to your mail"
+          );
           router.push("/");
         },
         onError: (ctx) => {
@@ -132,11 +134,7 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
-            <Button
-              className="w-full cursor-pointer"
-              type="submit"
-              disabled={isSubmitting}
-            >
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (
@@ -152,7 +150,7 @@ export default function SignUp() {
         </div>
 
         <Button
-          className="w-full cursor-pointer"
+          className="w-full"
           variant={"outline"}
           onClick={() => signInWithGoogle()}
           disabled={isSubmitting}

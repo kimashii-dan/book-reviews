@@ -97,7 +97,6 @@ function convertIntoText(htmlText: string): string {
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'");
-
   const sentences = decodedText.split(/(?<=[.!?])\s+/).slice(0, 3);
 
   return sentences.join(" ");

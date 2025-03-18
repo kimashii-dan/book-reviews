@@ -120,11 +120,7 @@ export default function SignIn() {
                 </FormItem>
               )}
             />
-            <Button
-              className="w-full cursor-pointer"
-              type="submit"
-              disabled={isSubmitting}
-            >
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (
@@ -140,7 +136,7 @@ export default function SignIn() {
         </div>
 
         <Button
-          className="w-full cursor-pointer"
+          className="w-full"
           variant={"outline"}
           onClick={() => signInWithGoogle()}
           disabled={isSubmitting}

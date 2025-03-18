@@ -34,8 +34,8 @@ export default function SignOutButton() {
   };
 
   return (
-    <div>
-      <Button onClick={signOut} disabled={isLoading} className="cursor-pointer">
+    <div className="mt-auto">
+      <Button onClick={signOut} disabled={isLoading}>
         {isLoading ? (
           <Loader2 className="animate-spin" size={48} />
         ) : (
