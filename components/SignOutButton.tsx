@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 
 export default function SignOutButton() {
   const router = useRouter();
@@ -34,12 +34,17 @@ export default function SignOutButton() {
   };
 
   return (
-    <div className="mt-auto">
-      <Button onClick={signOut} disabled={isLoading}>
+    <div className="">
+      <Button variant="secondary" onClick={signOut} disabled={isLoading}>
         {isLoading ? (
           <Loader2 className="animate-spin" size={48} />
         ) : (
-          "Sign out"
+          <p className="flex flex-row gap-2 items-center">
+            Sign out
+            <span>
+              <LogOut color="red" />
+            </span>
+          </p>
         )}
       </Button>
     </div>

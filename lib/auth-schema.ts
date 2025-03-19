@@ -16,9 +16,52 @@ export const formSchema = z.object({
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
     .max(50, { message: "Password cannot exceed 50 characters" }),
+  confirmPassword: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .max(50, { message: "Password cannot exceed 50 characters" }),
 });
+
+export const signUpFormSchema = formSchema
+  .pick({
+    name: true,
+    email: true,
+    password: true,
+    confirmPassword: true,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
 
 export const signInFormSchema = formSchema.pick({
   email: true,
   password: true,
 });
+
+export const forgotPasswordSchema = formSchema.pick({
+  email: true,
+});
+
+export const resetPasswordSchema = formSchema
+  .pick({
+    password: true,
+    confirmPassword: true,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+
+export const EditProfileSchema = formSchema
+  .pick({
+    name: true,
+    email: true,
+    password: true,
+    confirmPassword: true,
+  })
+  .partial()
+  .refine((data) => !data.password || data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });

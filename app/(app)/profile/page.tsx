@@ -1,7 +1,6 @@
 import { checkServerSession } from "@/app/actions";
 import { SessionUser } from "@/app/types";
 import { AvatarUploader } from "@/components/AvatarUploader";
-import SignOutButton from "@/components/SignOutButton";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import React from "react";
@@ -10,6 +9,8 @@ import { Check, Mail, UserCircle2 } from "lucide-react";
 import cloudinary from "@/lib/cloudinary";
 import { extractPublicId } from "@/app/utils/extractPublicId";
 import { User } from "@prisma/client";
+
+import { EditProfileDialog } from "@/components/EditProfileDialog";
 
 export default async function Profile() {
   const userSession: SessionUser | undefined = await checkServerSession();
@@ -52,34 +53,34 @@ export default async function Profile() {
         </div>
         <AvatarUploader onUploadSuccess={saveAvatar} />
       </div>
-      <div className="flex flex-col gap-10 text-left justify-center">
-        <ul className="flex flex-col gap-5">
+      <div className="flex flex-col gap-10 text-left">
+        <ul className="flex flex-col gap-5 h-full ">
           <li className="text-2xl font-semibold">{user?.name}</li>
-          <li>{user?.email}</li>
           <li>
-            {user?.emailVerified ? (
-              <p className="flex">
-                Account verified
-                <span className="ml-1">
-                  <Check color="green" />
-                </span>
-              </p>
-            ) : (
-              <>
-                <p className="flex text-base">
-                  Email not verified
+            <div className="flex flex-col text-lg font-semibold">
+              {user?.email}
+              {user?.emailVerified ? (
+                <p className="flex items-center text-sm text-gray-600">
+                  Email verified
                   <span className="ml-1">
-                    <Mail color="red" />
+                    <Check size={15} color="green" />
                   </span>
                 </p>
-                <p className="text-sm text-gray-500">
-                  Check your email to verify account
+              ) : (
+                <p className="flex items-center text-sm text-gray-600">
+                  Email not verified
+                  <span className="ml-1">
+                    <Mail size={15} color="red" />
+                  </span>
                 </p>
-              </>
-            )}
+              )}
+            </div>
           </li>
+
+          <div className="mt-auto">
+            <EditProfileDialog />
+          </div>
         </ul>
-        <SignOutButton />
       </div>
     </div>
   );

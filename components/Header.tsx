@@ -6,13 +6,15 @@ import { usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import SignOutButton from "./SignOutButton";
+
 export default function Header() {
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
 
   return (
-    <div className="w-full ">
-      <nav className="flex justify-center items-center w-4/6 mx-auto py-6">
+    <div className="w-full">
+      <nav className="flex justify-center items-center w-4/6 mx-auto py-6 relative">
         <ul className="flex flex-row justify-between items-center w-full">
           <li>
             <Link
@@ -59,13 +61,18 @@ export default function Header() {
                 )}
               </Link>
             ) : (
-              <Button className=" text-base" variant="outline" asChild>
+              <Button className="text-base" variant="outline" asChild>
                 <Link href="/sign-in">Login</Link>
               </Button>
             )}
           </li>
         </ul>
       </nav>
+      {session && (
+        <div className="absolute right-2 top-6">
+          <SignOutButton />
+        </div>
+      )}
     </div>
   );
 }

@@ -23,26 +23,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { formSchema } from "@/lib/auth-schema";
+import { signUpFormSchema } from "@/lib/auth-schema";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function SignUp() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   const { isSubmitting } = form.formState;
   const router = useRouter();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     const { name, email, password } = values;
     await authClient.signUp.email(
       {
@@ -69,16 +70,24 @@ export default function SignUp() {
             type: "manual",
             message: ctx.error.message,
           });
+
+          form.setError("password", {
+            type: "manual",
+            message: ctx.error.message,
+          });
         },
       }
     );
   }
 
   const signInWithGoogle = async () => {
-    const data = await authClient.signIn.social({
-      provider: "google",
-    });
-    console.log(data);
+    try {
+      const data = await authClient.signIn.social({ provider: "google" });
+      console.log(data);
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast("Google sign-in failed, please try again.");
+    }
   };
 
   return (
@@ -127,6 +136,23 @@ export default function SignUp() {
                     <Input
                       type="password"
                       placeholder="Enter your password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Enter your password again"
                       {...field}
                     />
                   </FormControl>

@@ -11,7 +11,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { z } from "zod";
 import {
   Form,
@@ -66,6 +65,11 @@ export default function SignIn() {
             type: "manual",
             message: ctx.error.message,
           });
+
+          form.setError("password", {
+            type: "manual",
+            message: ctx.error.message,
+          });
         },
       }
     );
@@ -107,7 +111,7 @@ export default function SignIn() {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="m-0">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
@@ -120,6 +124,15 @@ export default function SignIn() {
                 </FormItem>
               )}
             />
+            <div className="mb-5 mt-1">
+              <Link
+                className="underline text-sm text-blue-900"
+                href="/forgot-password"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             <Button className="w-full" type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
