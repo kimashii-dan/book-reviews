@@ -1,11 +1,13 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Stack
-
+## Technologies
 * Frontend Framework: Next.js
 * Database: Postgres (Prisma ORM)
-* Authentication: Better Auth
+* Authentication: Better Auth + Resend
 * UI: Shadcn
+* Storage for images: Cloudinary
+* Forms: Zod + React Hook Form
+* Styling: Tailwind CSS
 
 ## Getting Started
 
