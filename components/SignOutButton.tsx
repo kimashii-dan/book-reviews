@@ -39,12 +39,7 @@ export default function SignOutButton() {
         {isLoading ? (
           <Loader2 className="animate-spin" size={48} />
         ) : (
-          <p className="flex flex-row gap-2 items-center">
-            Sign out
-            <span>
-              <LogOut color="red" />
-            </span>
-          </p>
+          <LogOut color="red" />
         )}
       </Button>
     </div>

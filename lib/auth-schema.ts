@@ -53,15 +53,16 @@ export const resetPasswordSchema = formSchema
     path: ["confirmPassword"],
   });
 
-export const EditProfileSchema = formSchema
-  .pick({
-    name: true,
-    email: true,
-    password: true,
-    confirmPassword: true,
+export const editProfileSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, { message: "Name must be at least 2 characters long" })
+      .max(50, { message: "Name cannot exceed 50 characters" }),
+
+    bio: z
+      .string()
+      .min(2, { message: "Bio must be at least 2 characters long" })
+      .max(200, { message: "Bio cannot exceed 200 characters" }),
   })
-  .partial()
-  .refine((data) => !data.password || data.password === data.confirmPassword, {
-    message: "Passwords must match",
-    path: ["confirmPassword"],
-  });
+  .partial();

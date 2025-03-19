@@ -1,53 +1,88 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { User } from "@prisma/client";
+import { Loader2 } from "lucide-react";
+import { onSaveChanges } from "@/app/actions";
+import { useTransition } from "react";
+import { toast } from "sonner";
+import { useState } from "react";
+import { Textarea } from "./ui/textarea";
+import { Label } from "./ui/label";
 
-export function EditProfileDialog() {
+export function EditProfileDialog({ user }: { user: User | null }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const onSubmit = async (formData: FormData) => {
+    startTransition(async () => {
+      const result = await onSaveChanges(user?.id as string, formData);
+
+      if (result.success) {
+        toast.success(result.message);
+        setIsOpen(false);
+      } else {
+        toast.error(result.message);
+      }
+    });
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild className="w-full">
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
             Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+        <form action={onSubmit} className="space-y-4">
+          <div>
+            <Label className="mb-2" htmlFor="name">
               Name
             </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+            <Input
+              name="name"
+              placeholder="Enter new name"
+              defaultValue={user?.name || ""}
+              maxLength={50}
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
+          <div>
+            <Label className="mb-2" htmlFor="bio">
+              Bio
             </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+            <Textarea
+              name="bio"
+              placeholder="Write anything about yourself"
+              defaultValue={user?.bio || ""}
+              className="h-40 w-full p-2 border rounded"
+              maxLength={200}
+            />
+            <p className="text-sm text-muted-foreground mt-1">
+              Max 200 characters
+            </p>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Password
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+          <Button className="w-full mt-5" type="submit" disabled={isPending}>
+            {isPending ? (
+              <Loader2 className="animate-spin" size={48} />
+            ) : (
+              "Save changes"
+            )}
+          </Button>
+        </form>
       </DialogContent>
     </Dialog>
   );

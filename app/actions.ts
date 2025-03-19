@@ -67,7 +67,6 @@ export async function submitReview(
 export const checkServerSession = async (): Promise<
   SessionUser | undefined
 > => {
-  "use server";
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -77,3 +76,25 @@ export const checkServerSession = async (): Promise<
     return undefined;
   }
 };
+
+export async function onSaveChanges(userId: string, formData: FormData) {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: formData.get("name") as string,
+        bio: formData.get("bio") as string,
+      },
+    });
+
+    revalidatePath("/profile");
+    return {
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    };
+  } catch (error) {
+    console.error("Error updating profile: ", error);
+    return { success: false, message: "Failed to update profile" };
+  }
+}

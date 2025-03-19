@@ -7,27 +7,15 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import prisma from "@/lib/db";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { getCachedReviews } from "@/app/utils/getCachedReviews";
 export default async function UserReviews({
   user,
 }: {
   user: SessionUser | undefined;
 }) {
-  const reviews = await prisma.review.findMany({
-    where: {
-      userId: user?.id,
-    },
-    include: {
-      book: true,
-    },
-    orderBy: {
-      reviewDate: "desc",
-    },
-  });
-
-  if (reviews.length === 0)
+  if (!user) {
     return (
       <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
         <div className="w-full h-[65vh] flex flex-col justify-center items-center">
@@ -43,11 +31,32 @@ export default async function UserReviews({
         </div>
       </div>
     );
+  }
+
+  const reviews = await getCachedReviews(user.id);
+
+  if (reviews.length === 0) {
+    return (
+      <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
+        <div className="w-full h-[65vh] flex flex-col justify-center items-center">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold">No Reviews Found</h1>
+            <p className="text-gray-600 mt-1 mb-5">
+              You haven&apos;t reviewed any books yet.
+            </p>
+            <Button asChild className="px-8 py-6 text-xl ">
+              <Link href="/books">Explore Books</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
       <div className="mb-10 mt-5 w-full">
-        <h1 className="text-3xl font-bold">Welcome {user?.name}, </h1>
+        <h1 className="text-3xl font-bold">Welcome {user.name}, </h1>
         <h2 className="text-2xl">Here&apos;s your reviews</h2>
       </div>
       <Carousel

@@ -46,6 +46,7 @@ export default async function Profile() {
               alt="Your avatar"
               fill
               className="object-cover"
+              priority
             />
           ) : (
             <UserCircle2 className="w-full h-full" />
@@ -78,7 +79,7 @@ export default async function Profile() {
           </li>
 
           <div className="mt-auto">
-            <EditProfileDialog />
+            <EditProfileDialog user={user} />
           </div>
         </ul>
       </div>
