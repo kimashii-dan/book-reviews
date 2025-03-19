@@ -7,14 +7,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Link from "next/link";
-import { getCachedReviews } from "@/app/utils/getCachedReviews";
-export default async function UserReviews({
-  user,
-}: {
-  user: SessionUser | undefined;
-}) {
+import { checkServerSession } from "@/app/actions";
+import prisma from "@/lib/db";
+export default async function UserReviewsComponent() {
+  const user: SessionUser | undefined = await checkServerSession();
   if (!user) {
     return (
       <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
@@ -33,7 +31,11 @@ export default async function UserReviews({
     );
   }
 
-  const reviews = await getCachedReviews(user.id);
+  const reviews = await prisma.review.findMany({
+    where: { userId: user?.id },
+    include: { book: true },
+    orderBy: { reviewDate: "desc" },
+  });
 
   if (reviews.length === 0) {
     return (

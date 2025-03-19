@@ -1,7 +1,7 @@
 import SearchComponent from "@/components/SearchComponent";
-import SearchedBooks from "@/components/SearchedBooks";
-import { SkeletonBookList } from "@/components/SkeletonBookList";
+import { SkeletonBookList } from "@/components/loadingUI/SkeletonBookList";
 import React, { Suspense } from "react";
+import BooksComponent from "@/components/suspended/BooksComponent";
 
 export default async function Books(props: {
   searchParams?: Promise<{
@@ -18,7 +18,7 @@ export default async function Books(props: {
       <SearchComponent search={search} />
 
       <Suspense key={`${search}-${page}`} fallback={<SkeletonBookList />}>
-        <SearchedBooks search={search} page={page} />
+        <BooksComponent search={search} page={page} />
       </Suspense>
     </div>
   );

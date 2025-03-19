@@ -5,9 +5,9 @@ import prisma from "@/lib/db";
 import { Book } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { PaginationComponent } from "./PaginationComponent";
+import { PaginationComponent } from "../PaginationComponent";
 
-export default async function SearchedBooks({
+export default async function BooksComponent({
   search,
   page,
 }: {

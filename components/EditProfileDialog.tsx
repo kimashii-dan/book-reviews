@@ -19,7 +19,7 @@ import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 
-export function EditProfileDialog({ user }: { user: User | null }) {
+export function EditProfileDialog({ user }: { user: User | null | undefined }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 

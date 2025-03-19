@@ -52,7 +52,7 @@ export async function submitReview(
       },
     });
 
-    revalidatePath(`/books/${book.id}`);
+    revalidatePath(`/`);
     return {
       success: true,
       message: "Review submitted successfully!",

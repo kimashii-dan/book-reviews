@@ -45,7 +45,7 @@ export default function Header() {
                 }
               >
                 {session.user.image ? (
-                  <div className="w-10 h-10 rounded-full overflow-hidden relative">
+                  <div className="w-8 h-8 rounded-full overflow-hidden relative">
                     <Image
                       src={session.user.image}
                       alt="Your avatar"

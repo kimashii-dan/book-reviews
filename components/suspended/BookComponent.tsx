@@ -15,18 +15,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import ReviewForm from "./ReviewForm";
+import ReviewForm from "../ReviewForm";
 import prisma from "@/lib/db";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { BookWithReviewsType, SessionUser } from "@/app/types";
 import { checkServerSession } from "@/app/actions";
 
 export default async function BookComponent({
-  id,
+  params,
 }: {
-  id: string | undefined;
+  params: Promise<{ [key: string]: string | undefined }>;
 }) {
+  const { id } = await params;
+
   if (!id) return <div>Book not found</div>;
 
   const [currentUser, bookWithReviews]: [
