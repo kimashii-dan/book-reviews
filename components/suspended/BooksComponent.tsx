@@ -1,4 +1,4 @@
-import { findGoogleBooksByTitle } from "@/app/utils/findBooksByTitle";
+import { findAPIBooksByTitle } from "@/app/utils/findAPIBooksByTitle";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import prisma from "@/lib/db";
@@ -20,7 +20,7 @@ export default async function BooksComponent({
 
   if (search && page) {
     const offset = (page - 1) * limit;
-    const data = await findGoogleBooksByTitle(search, offset);
+    const data = await findAPIBooksByTitle(search, offset);
     books = data?.books || null;
     totalResults = data?.totalResults || 0;
   } else {

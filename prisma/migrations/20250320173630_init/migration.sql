@@ -5,6 +5,7 @@ CREATE TABLE "user" (
     "name" TEXT,
     "emailVerified" BOOLEAN NOT NULL,
     "image" TEXT,
+    "bio" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -61,9 +62,12 @@ CREATE TABLE "book" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
-    "rating" DOUBLE PRECISION,
-    "description" TEXT NOT NULL,
-    "cover" TEXT NOT NULL,
+    "description" TEXT,
+    "cover" TEXT,
+    "publishDate" TEXT,
+    "reviewCount" INTEGER NOT NULL DEFAULT 0,
+    "totalRating" INTEGER NOT NULL DEFAULT 0,
+    "averageRating" DOUBLE PRECISION NOT NULL DEFAULT 0,
 
     CONSTRAINT "book_pkey" PRIMARY KEY ("id")
 );
@@ -94,7 +98,7 @@ ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "review" ADD CONSTRAINT "review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "review" ADD CONSTRAINT "review_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "book"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "review" ADD CONSTRAINT "review_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "book"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "review" ADD CONSTRAINT "review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

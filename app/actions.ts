@@ -64,7 +64,7 @@ export async function submitReview(
   }
 }
 
-export const checkServerSession = async (): Promise<
+export const getServerSessionUser = async (): Promise<
   SessionUser | undefined
 > => {
   try {
@@ -77,7 +77,7 @@ export const checkServerSession = async (): Promise<
   }
 };
 
-export async function onSaveChanges(userId: string, formData: FormData) {
+export async function saveChanges(userId: string, formData: FormData) {
   try {
     const updatedUser = await prisma.user.update({
       where: { id: userId },

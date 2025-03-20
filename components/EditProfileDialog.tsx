@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { User } from "@prisma/client";
 import { Loader2 } from "lucide-react";
-import { onSaveChanges } from "@/app/actions";
+import { saveChanges } from "@/app/actions";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -25,7 +25,7 @@ export function EditProfileDialog({ user }: { user: User | null | undefined }) {
 
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
-      const result = await onSaveChanges(user?.id as string, formData);
+      const result = await saveChanges(user?.id as string, formData);
 
       if (result.success) {
         toast.success(result.message);

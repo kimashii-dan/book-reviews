@@ -1,4 +1,4 @@
-import { findGoogleBookById } from "@/app/utils/findBookById";
+import { findAPIBookById } from "@/app/utils/findAPIBookById";
 import React from "react";
 import {
   Card,
@@ -20,7 +20,7 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { BookWithReviewsType, SessionUser } from "@/app/types";
-import { checkServerSession } from "@/app/actions";
+import { getServerSessionUser } from "@/app/actions";
 
 export default async function BookComponent({
   params,
@@ -35,7 +35,7 @@ export default async function BookComponent({
     SessionUser | undefined,
     BookWithReviewsType | null
   ] = await Promise.all([
-    checkServerSession(),
+    getServerSessionUser(),
     prisma.book.findUnique({
       where: { id },
       include: {
@@ -44,11 +44,12 @@ export default async function BookComponent({
           orderBy: { reviewDate: "desc" },
         },
       },
+      cacheStrategy: { swr: 60 },
     }),
   ]);
 
   const book: BookWithReviewsType | null =
-    bookWithReviews || (await findGoogleBookById(id));
+    bookWithReviews || (await findAPIBookById(id));
 
   if (!book) return <div>Book not found</div>;
 

@@ -9,10 +9,10 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { checkServerSession } from "@/app/actions";
+import { getServerSessionUser } from "@/app/actions";
 import prisma from "@/lib/db";
 export default async function UserReviewsComponent() {
-  const user: SessionUser | undefined = await checkServerSession();
+  const user: SessionUser | undefined = await getServerSessionUser();
   if (!user) {
     return (
       <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
@@ -35,6 +35,7 @@ export default async function UserReviewsComponent() {
     where: { userId: user?.id },
     include: { book: true },
     orderBy: { reviewDate: "desc" },
+    cacheStrategy: { swr: 60 },
   });
 
   if (reviews.length === 0) {

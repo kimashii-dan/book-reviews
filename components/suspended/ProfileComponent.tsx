@@ -1,4 +1,4 @@
-import { checkServerSession } from "@/app/actions";
+import { getServerSessionUser } from "@/app/actions";
 import { SessionUser } from "@/app/types";
 import { AvatarUploader } from "@/components/AvatarUploader";
 import prisma from "@/lib/db";
@@ -11,10 +11,11 @@ import { extractPublicId } from "@/app/utils/extractPublicId";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
 
 export default async function ProfileComponent() {
-  const userSession: SessionUser | undefined = await checkServerSession();
+  const userSession: SessionUser | undefined = await getServerSessionUser();
 
   const user = await prisma.user.findFirst({
     where: { id: userSession?.id },
+    cacheStrategy: { swr: 60 },
   });
 
   async function saveAvatar(url: string) {
@@ -56,7 +57,7 @@ export default async function ProfileComponent() {
 
           <li className="text-base">
             <span className="text-gray-600">Bio</span>
-            <p> {user?.bio}</p>
+            <p> {user?.bio || "No bio yet"}</p>
           </li>
           <li>
             <div className="flex flex-col text-lg font-semibold">
