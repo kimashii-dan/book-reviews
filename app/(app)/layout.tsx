@@ -1,4 +1,5 @@
-import Header from "@/components/Header";
+import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default async function RootLayout({
   children,
@@ -6,10 +7,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <Header />
-      <hr />
-      <main className="w-full h-screen">{children}</main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }

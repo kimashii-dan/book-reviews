@@ -18,10 +18,12 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
+import { useRouter } from "next/navigation";
 
 export function EditProfileDialog({ user }: { user: User | null | undefined }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const onSubmit = async (formData: FormData) => {
     startTransition(async () => {
@@ -34,6 +36,8 @@ export function EditProfileDialog({ user }: { user: User | null | undefined }) {
         toast.error(result.message);
       }
     });
+
+    router.refresh();
   };
 
   return (

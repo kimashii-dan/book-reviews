@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <div className="w-full">
-      <nav className="flex justify-center items-center w-4/6 mx-auto py-6 relative">
+      <nav className="flex justify-center items-center w-9/12 mx-auto py-6 relative">
         <ul className="flex flex-row justify-between items-center w-full">
           <li>
             <Link

@@ -6,46 +6,61 @@ export async function findAPIBooksByTitle(
   title: string,
   offset: number
 ): Promise<{ books: Book[] | null; totalResults: number }> {
-  if (!title || offset === null) return { books: null, totalResults: 0 };
+  if (!title) return { books: null, totalResults: 0 };
 
   try {
-    const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
-        title
-      )}&startIndex=${offset}&maxResults=6&fields=items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/publishedDate,volumeInfo/imageLinks/thumbnail),totalItems&key=${
-        process.env.GOOGLE_API_KEY as string
-      }`
-    );
+    const apiKey = process.env.GOOGLE_API_KEY;
+    if (!apiKey) throw new Error("Google API key not configured");
+
+    const apiUrl = new URL("https://www.googleapis.com/books/v1/volumes");
+
+    apiUrl.search = new URLSearchParams({
+      q: title,
+      startIndex: offset.toString(),
+      maxResults: "6",
+      fields:
+        "items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/publishedDate,volumeInfo/description,volumeInfo/imageLinks/thumbnail),totalItems",
+      key: apiKey,
+    }).toString();
+
+    const response = await fetch(apiUrl.toString());
 
     if (!response.ok)
       throw new Error(`API request failed: ${response.statusText}`);
 
     const { items, totalItems } = await response.json();
-
     if (!items?.length) return { books: null, totalResults: totalItems || 0 };
 
     const googleIds = items.map((book: BookGoogleAPIType) => book.id);
     const ratings = await prisma.book.findMany({
       where: { id: { in: googleIds } },
-      select: { id: true, averageRating: true },
+      select: { id: true, averageRating: true, reviewCount: true },
     });
 
-    const ratingMap = new Map(ratings.map((b) => [b.id, b.averageRating]));
+    const ratingLookup = Object.fromEntries(
+      ratings.map(({ id, averageRating, reviewCount }) => [
+        id,
+        { averageRating: averageRating ?? 0, reviewCount: reviewCount ?? 0 },
+      ])
+    );
 
-    const books = items.map((book: BookGoogleAPIType) => ({
-      id: book.id,
-      title: book.volumeInfo.title || "Unknown Title",
-      author: book.volumeInfo.authors?.[0] || "Unknown Author",
-      publishDate:
-        book.volumeInfo.publishedDate?.substring(0, 4) || "Unknown Year",
-      cover:
-        book.volumeInfo.imageLinks?.thumbnail?.replace("http://", "https://") ||
-        "/default-cover.jpg",
-      description: book.volumeInfo.description || "",
-      reviewCount: 0,
-      totalRating: 0,
-      averageRating: ratingMap.get(book.id) || 0,
-    }));
+    const books = items.map((book: BookGoogleAPIType) => {
+      const volumeInfo = book.volumeInfo;
+      const publishedYear = volumeInfo.publishedDate?.split("-")[0] || "0000";
+
+      return {
+        id: book.id,
+        title: volumeInfo.title || "Unknown Title",
+        author: volumeInfo.authors?.[0] || "Unknown Author",
+        publishDate: publishedYear,
+        cover:
+          volumeInfo.imageLinks?.thumbnail?.replace(/^http:/i, "https:") ||
+          "/images/cover.jpg",
+        description: volumeInfo.description || "",
+        reviewCount: ratingLookup[book.id]?.reviewCount ?? 0,
+        averageRating: ratingLookup[book.id]?.averageRating ?? 0,
+      };
+    });
 
     return { books, totalResults: totalItems };
   } catch (error) {
@@ -108,3 +123,86 @@ export async function findBooksByTitle(
     return { books: null, totalResults: 0 };
   }
 }
+
+// export async function findFilterAPIBooksByTitle(
+//   title: string,
+//   offset: number,
+//   sortBy: "rating" | "reviewCount" | "publishedDate"
+// ): Promise<{ books: Book[] | null; totalResults: number }> {
+//   if (!title) return { books: null, totalResults: 0 };
+
+//   try {
+//     const orderBy = sortBy === "publishedDate" ? "newest" : "relevance";
+//     const apiUrl = new URL("https://www.googleapis.com/books/v1/volumes");
+
+//     apiUrl.search = new URLSearchParams({
+//       q: title,
+//       startIndex: offset.toString(),
+//       maxResults: "6",
+//       orderBy,
+//       fields:
+//         "items(id,volumeInfo/title,volumeInfo/authors,volumeInfo/publishedDate,volumeInfo/description,volumeInfo/imageLinks/thumbnail),totalItems",
+//       key: process.env.GOOGLE_API_KEY as string,
+//     }).toString();
+
+//     const response = await fetch(apiUrl.toString());
+
+//     if (!response.ok) {
+//       throw new Error(
+//         `API request failed: ${response.statusText} (${response.status})`
+//       );
+//     }
+
+//     const { items, totalItems } = await response.json();
+//     if (!items?.length) return { books: null, totalResults: totalItems || 0 };
+
+//     // Fetch ratings in single query
+//     const googleIds = items.map((book: BookGoogleAPIType) => book.id);
+//     const ratings = await prisma.book.findMany({
+//       where: { id: { in: googleIds } },
+//       select: { id: true, averageRating: true, reviewCount: true },
+//     });
+
+//     // Create lookup maps in single pass
+//     const ratingMap = new Map();
+//     const reviewCountMap = new Map();
+//     ratings.forEach((book) => {
+//       ratingMap.set(book.id, book.averageRating ?? 0);
+//       reviewCountMap.set(book.id, book.reviewCount ?? 0);
+//     });
+
+//     const books = items.map((book: BookGoogleAPIType) => {
+//       const volumeInfo = book.volumeInfo;
+//       const publishedYear = volumeInfo.publishedDate?.split("-")[0] || "0000";
+
+//       return {
+//         id: book.id,
+//         title: volumeInfo.title || "Unknown Title",
+//         author: volumeInfo.authors?.[0] || "Unknown Author",
+//         publishDate: publishedYear,
+//         cover:
+//           volumeInfo.imageLinks?.thumbnail
+//             ?.replace(/^http:/, "https:")
+//             .replace("http://", "https://") || "/default-cover.jpg",
+//         description: volumeInfo.description || "",
+//         reviewCount: reviewCountMap.get(book.id) ?? 0,
+//         totalRating: 0,
+//         averageRating: ratingMap.get(book.id) ?? 0,
+//       };
+//     });
+
+//     switch (sortBy) {
+//       case "rating":
+//         books.sort((a: Book, b: Book) => b.averageRating - a.averageRating);
+//         break;
+//       case "reviewCount":
+//         books.sort((a: Book, b: Book) => b.reviewCount - a.reviewCount);
+//         break;
+//     }
+
+//     return { books, totalResults: totalItems };
+//   } catch (error) {
+//     console.error("Error in findAPIBooksByTitle:", error);
+//     return { books: null, totalResults: 0 };
+//   }
+// }

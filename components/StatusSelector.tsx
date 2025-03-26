@@ -29,9 +29,8 @@ export default function StatusSelector({
       <SelectContent>
         <SelectGroup>
           <SelectLabel className="font-bold">Status</SelectLabel>
-          <SelectItem value="completed">Completed</SelectItem>
-          <SelectItem value="reading">Reading</SelectItem>
-          <SelectItem value="dropped">Dropped</SelectItem>
+          <SelectItem value="completed">Have read</SelectItem>
+          <SelectItem value="reading">Reading now</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

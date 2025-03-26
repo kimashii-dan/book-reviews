@@ -1,10 +1,10 @@
 import UserReviews from "@/components/suspended/UserReviewsComponent";
 import { Suspense } from "react";
-import Loading from "@/components/loadingUI/Loading";
+import SkeletonUserReviews from "@/components/loadingUI/SkeletonUserReviews";
 
 export default async function Page() {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<SkeletonUserReviews />}>
       <UserReviews />
     </Suspense>
   );

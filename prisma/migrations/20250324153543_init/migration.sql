@@ -80,7 +80,9 @@ CREATE TABLE "review" (
     "rating" INTEGER NOT NULL,
     "status" TEXT NOT NULL DEFAULT 'reading',
     "bookId" TEXT NOT NULL,
-    "reviewDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "isFavourite" BOOLEAN NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "review_pkey" PRIMARY KEY ("id")
 );

@@ -55,7 +55,7 @@ export default async function BooksComponent({
         {books?.map((book: Book, index) => (
           <Card
             key={index}
-            className="flex flex-col items-center p-4 gap-4 w-full mb-4"
+            className="flex flex-col items-center p-4 gap-4 max-w-[300px] mb-4"
           >
             <div className="w-full text-center">
               <CardTitle className="text-xl truncate">{book.title}</CardTitle>
@@ -86,11 +86,11 @@ export default async function BooksComponent({
               <div
                 className={"w-full flex flex-row justify-between items-center"}
               >
-                <Button asChild className="w-full max-w-[80%]">
+                <Button asChild className="w-full max-w-[70%]">
                   <Link href={`/books/${book.id}`}>Go to book page</Link>
                 </Button>
                 <p className="text-gray-600">
-                  {book.averageRating}
+                  {book.averageRating.toFixed(1)}
                   <span className="text-yellow-500 ml-1">★</span>
                 </p>
               </div>

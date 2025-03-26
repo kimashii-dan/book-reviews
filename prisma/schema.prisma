@@ -19,7 +19,6 @@ model User {
   accounts      Account[]
   reviews       Review[]
   sessions      Session[]
-
   @@map("user")
 }
 
@@ -78,7 +77,6 @@ model Book {
   totalRating Int      @default(0)
   averageRating Float @default(0)
   reviews     Review[]
-
   @@map("book")
 }
 
@@ -89,7 +87,9 @@ model Review {
   rating     Int
   status     String   @default("reading")
   bookId     String
-  reviewDate DateTime @default(now())
+  isFavourite   Boolean  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
   book       Book     @relation(fields: [bookId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
 

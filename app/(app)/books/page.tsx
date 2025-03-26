@@ -14,7 +14,7 @@ export default async function Books(props: {
   const page = Number(searchParams?.page || 1);
 
   return (
-    <div className="flex flex-col justify-center items-center w-4/6 mx-auto gap-8 ">
+    <div className="flex flex-col justify-center items-center w-9/12 mx-auto gap-8 ">
       <SearchComponent search={search} />
 
       <Suspense key={`${search}-${page}`} fallback={<SkeletonBookList />}>

@@ -19,12 +19,6 @@ interface BookGoogleAPIType {
     imageLinks?: {
       thumbnail?: string;
     };
-    industryIdentifiers?: Array<{
-      type: string;
-      identifier: string;
-    }>;
-    categories?: string[];
-    publisher?: string;
   };
 }
 
@@ -34,12 +28,31 @@ type BookWithReviewsType = Prisma.BookGetPayload<{
 
 type CreateReviewType = Prisma.ReviewCreateManyInput;
 
-type SessionUser = typeof authClient.$Infer.Session.user;
+type Session = typeof authClient.$Infer.Session;
+
+type ReadingNowBooksType = Prisma.ReviewGetPayload<{
+  select: {
+    book: {
+      select: {
+        id: true;
+        title: true;
+        author: true;
+        publishDate: true;
+        cover: true;
+        averageRating: true;
+      };
+    };
+  };
+}>;
+
+type Filter = "rating" | "reviewCount" | "publishedDate" | "";
 
 export type {
   CreateReviewType,
   BookWithReviewsType,
   BookAPIType,
-  SessionUser,
   BookGoogleAPIType,
+  Session,
+  Filter,
+  ReadingNowBooksType,
 };

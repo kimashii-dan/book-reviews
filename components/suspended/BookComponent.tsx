@@ -19,8 +19,9 @@ import ReviewForm from "../ReviewForm";
 import prisma from "@/lib/db";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { BookWithReviewsType, SessionUser } from "@/app/types";
-import { getServerSessionUser } from "@/app/actions";
+import { BookWithReviewsType, Session } from "@/app/types";
+import { getServerSession } from "@/app/actions";
+import { Heart } from "lucide-react";
 
 export default async function BookComponent({
   params,
@@ -31,17 +32,17 @@ export default async function BookComponent({
 
   if (!id) return <div>Book not found</div>;
 
-  const [currentUser, bookWithReviews]: [
-    SessionUser | undefined,
+  const [session, bookWithReviews]: [
+    Session | null,
     BookWithReviewsType | null
   ] = await Promise.all([
-    getServerSessionUser(),
+    getServerSession(),
     prisma.book.findUnique({
       where: { id },
       include: {
         reviews: {
           include: { user: true },
-          orderBy: { reviewDate: "desc" },
+          orderBy: { createdAt: "desc" },
         },
       },
       cacheStrategy: { swr: 60 },
@@ -53,11 +54,16 @@ export default async function BookComponent({
 
   if (!book) return <div>Book not found</div>;
 
-  const sortedReviews = book.reviews.sort((a, b) =>
-    a.userId === currentUser?.id ? -1 : b.userId === currentUser?.id ? 1 : 0
+  const editReview = book.reviews.find(
+    (review) => review.userId === session?.user.id
   );
-  const hasUserPostedReview = book?.reviews.some(
-    (review) => review.userId === currentUser?.id
+
+  const sortedReviews = book.reviews.sort((a, b) =>
+    a.userId === session?.user.id ? -1 : b.userId === session?.user.id ? 1 : 0
+  );
+
+  const isFavourite = book.reviews.some(
+    (review) => review.userId === session?.user.id && review.isFavourite
   );
 
   return (
@@ -81,14 +87,23 @@ export default async function BookComponent({
           <div className="w-full flex flex-col justify-around h-full">
             <CardHeader className=" p-0 flex flex-col gap-5">
               <CardTitle className="text-3xl w-full">{book.title}</CardTitle>
+              {isFavourite && (
+                <div className="text-red-500 flex flex-row gap-2 items-center">
+                  <p>In favourites</p>
+
+                  <span>
+                    <Heart color="red" fill="red" size={15} />
+                  </span>
+                </div>
+              )}
               <CardDescription className="w-full text-xl italic ">
                 {book.author} ({book.publishDate})
               </CardDescription>
-              <CardContent className="p-0 w-full flex justify-between items-center text-lg">
+              <CardContent className="p-0 w-full flex justify-between  text-lg">
                 <div className="flex items-center gap-2">
                   <p>Average rating:</p>
                   <p className="font-semibold">
-                    {book.averageRating}
+                    {book.averageRating.toFixed(1)}
                     <span className="text-yellow-500 ml-1">★</span>
                   </p>
                 </div>
@@ -111,7 +126,7 @@ export default async function BookComponent({
                     <CarouselItem key={review.id} className="basis-1/2">
                       <Card className="h-full gap-3">
                         <CardHeader>
-                          {review.user.id === currentUser?.id ? (
+                          {review.user.id === session?.user.id ? (
                             <CardTitle className="text-xl">
                               Your review
                             </CardTitle>
@@ -162,7 +177,7 @@ export default async function BookComponent({
                               <span className="text-red-500">•</span>
                             )}
                             <span>
-                              {new Date(review.reviewDate).toLocaleDateString()}
+                              {new Date(review.createdAt).toLocaleDateString()}
                             </span>
                           </div>
                         </CardContent>
@@ -185,13 +200,11 @@ export default async function BookComponent({
       </div>
 
       <div className="w-full max-w-[1800px] mx-auto p-4 relative">
-        <div
-          className={`${!currentUser || hasUserPostedReview ? "blur-sm" : ""}`}
-        >
-          <ReviewForm book={book} />
+        <div className={`${!session ? "blur-sm" : ""}`}>
+          <ReviewForm book={book} editReview={editReview} />
         </div>
 
-        {!currentUser && (
+        {!session && (
           <div className="absolute inset-0 flex items-center justify-center">
             <Button
               asChild
@@ -201,13 +214,13 @@ export default async function BookComponent({
             </Button>
           </div>
         )}
-        {hasUserPostedReview && (
+        {/* {hasUserPostedReview && (
           <div className="absolute inset-0 flex items-center justify-center rounded-lg">
             <p className="text-black text-lg font-semibold text-center w-full">
               You have already posted a review for this book.
             </p>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

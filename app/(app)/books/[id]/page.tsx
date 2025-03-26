@@ -8,7 +8,7 @@ export default async function BookPage({
   params: Promise<{ [key: string]: string | undefined }>;
 }) {
   return (
-    <div className="flex flex-col justify-center items-center w-4/6 mx-auto  ">
+    <div className="flex flex-col justify-center items-center w-9/12 mx-auto  ">
       <div className="w-full text-left my-5">
         <BackButton />
       </div>

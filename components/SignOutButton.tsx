@@ -35,12 +35,18 @@ export default function SignOutButton() {
 
   return (
     <div className="">
-      <Button variant="secondary" onClick={signOut} disabled={isLoading}>
+      <Button
+        variant="ghost"
+        onClick={signOut}
+        disabled={isLoading}
+        className="flex flex-row gap-2 justify-start w-full"
+      >
         {isLoading ? (
           <Loader2 className="animate-spin" size={48} />
         ) : (
-          <LogOut color="red" />
+          <LogOut />
         )}
+        Log out
       </Button>
     </div>
   );

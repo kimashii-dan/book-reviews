@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
+const openSans = Open_Sans({
+  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} antialiased `}>
+      <body className={`${openSans.className} antialiased `}>
         {children}
         <Toaster />
       </body>

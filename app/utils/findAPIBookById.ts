@@ -7,12 +7,10 @@ export async function findAPIBookById(
 
   try {
     const apiResponse = await fetch(
-      `https://www.googleapis.com/books/v1/volumes/${id}&key=${
-        process.env.GOOGLE_API_KEY as string
-      }`
+      `https://www.googleapis.com/books/v1/volumes/${id}`
     );
 
-    if (!apiResponse.ok) throw new Error("Failed to fetch book data");
+    if (!apiResponse.ok) throw new Error("Failed to fetch data");
 
     const bookDetails = await apiResponse.json();
     if (!bookDetails) return null;

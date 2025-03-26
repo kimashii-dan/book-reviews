@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useTransition } from "react";
 import BackButton from "./ui/BackButton";
+
 export default function SearchComponent({ search }: { search: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const handleSearch = useDebouncedCallback((term) => {
+  const handleSearch = useDebouncedCallback((term: string) => {
     startTransition(() => {
       router.push(`/books?search=${term}&page=1`);
     });
@@ -18,21 +19,16 @@ export default function SearchComponent({ search }: { search: string }) {
   return (
     <>
       <div className="flex flex-row justify-between items-center w-full mt-10">
-        <div className="">
-          <h1 className="text-4xl font-bold">Books</h1>
-        </div>
-
-        <div className="flex flex-row gap-2 w-[43%] relative">
+        <h1 className="text-4xl font-bold">Library</h1>
+        <div className="flex flex-row gap-2 w-[40%] relative">
           <Input
             name="search"
             type="text"
             placeholder="Search for any book"
             className="p-4 text-base placeholder:text-base"
-            onChange={(e) => {
-              handleSearch(e.target.value);
-            }}
+            defaultValue={search}
+            onChange={(e) => handleSearch(e.target.value)}
           />
-
           {isPending ? (
             <Loader2
               className="absolute right-3 top-2 animate-spin"

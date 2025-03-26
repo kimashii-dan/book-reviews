@@ -1,16 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 import prisma from "@/lib/db";
-import { BookWithReviewsType, CreateReviewType, SessionUser } from "./types";
+import { BookWithReviewsType, CreateReviewType, Session } from "./types";
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
+export const getServerSession = async (): Promise<Session | null> => {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    if (!session) {
+      return null;
+    }
+    return session;
+  } catch (error) {
+    return null;
+  }
+};
+
 export async function submitReview(
   bookData: BookWithReviewsType,
   reviewData: CreateReviewType
 ) {
+  console.log(reviewData);
   try {
     const book = await prisma.book.upsert({
       where: { id: bookData.id },
@@ -31,51 +46,63 @@ export async function submitReview(
       },
     });
 
-    await prisma.review.create({
-      data: {
-        userId: reviewData.userId,
-        comment: reviewData.comment,
-        rating: reviewData.rating,
-        status: reviewData.status,
-        bookId: book.id,
-      },
-    });
+    let oldRating = 0;
 
-    const updatedBook = await prisma.book.update({
+    if (reviewData.id) {
+      const existingReview = await prisma.review.findUnique({
+        where: { id: reviewData.id },
+      });
+      if (!existingReview) throw new Error("Review not found");
+      oldRating = existingReview.rating;
+
+      await prisma.review.update({
+        where: { id: reviewData.id },
+        data: { ...reviewData, updatedAt: new Date() },
+      });
+    } else {
+      await prisma.review.create({
+        data: {
+          userId: reviewData.userId,
+          comment: reviewData.comment,
+          rating: reviewData.rating,
+          status: reviewData.status,
+          bookId: book.id,
+          isFavourite: reviewData.isFavourite,
+          updatedAt: reviewData.updatedAt,
+          createdAt: reviewData.createdAt,
+        },
+      });
+
+      await prisma.book.update({
+        where: { id: book.id },
+        data: { reviewCount: { increment: 1 } },
+      });
+    }
+
+    const ratingDifference = reviewData.rating - oldRating;
+
+    await prisma.book.update({
       where: { id: book.id },
       data: {
-        totalRating: { increment: reviewData.rating },
-        reviewCount: { increment: 1 },
+        totalRating: { increment: ratingDifference },
         averageRating: {
-          set: (book.totalRating + reviewData.rating) / (book.reviewCount + 1),
+          set: reviewData.id
+            ? (book.totalRating + ratingDifference) / book.reviewCount
+            : (book.totalRating + reviewData.rating) / (book.reviewCount + 1),
         },
       },
     });
 
-    revalidatePath(`/`);
+    revalidatePath("/");
     return {
       success: true,
       message: "Review submitted successfully!",
-      averageRating: updatedBook.averageRating,
     };
   } catch (error) {
     console.error("Error submitting review:", error);
     return { success: false, message: "Failed to submit review." };
   }
 }
-
-export const getServerSessionUser = async (): Promise<
-  SessionUser | undefined
-> => {
-  try {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-    return session?.user;
-  } catch (error) {
-    return undefined;
-  }
-};
 
 export async function saveChanges(userId: string, formData: FormData) {
   try {

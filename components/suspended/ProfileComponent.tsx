@@ -1,5 +1,3 @@
-import { getServerSessionUser } from "@/app/actions";
-import { SessionUser } from "@/app/types";
 import { AvatarUploader } from "@/components/AvatarUploader";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
@@ -9,12 +7,14 @@ import { Check, Mail } from "lucide-react";
 import cloudinary from "@/lib/cloudinary";
 import { extractPublicId } from "@/app/utils/extractPublicId";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
+import { getServerSession } from "@/app/actions";
+import { Session } from "@/app/types";
 
 export default async function ProfileComponent() {
-  const userSession: SessionUser | undefined = await getServerSessionUser();
+  const session: Session | null = await getServerSession();
 
   const user = await prisma.user.findFirst({
-    where: { id: userSession?.id },
+    where: { id: session?.user.id },
     cacheStrategy: { swr: 60 },
   });
 

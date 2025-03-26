@@ -11,7 +11,7 @@ export default function SkeletonUserReviews() {
   const skeletonItems = Array.from({ length: 3 });
 
   return (
-    <div className="flex flex-col justify-center items-center w-4/6 mx-auto py-8 gap-5">
+    <div className="flex flex-col justify-center items-center w-9/12 mx-auto py-8 gap-5">
       <div className="mb-10 mt-5 w-full">
         <div className="h-8 w-1/4 bg-gray-200 rounded animate-pulse" />
         <div className="h-6 w-1/3 bg-gray-200 rounded mt-2 animate-pulse" />
