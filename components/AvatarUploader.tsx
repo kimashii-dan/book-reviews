@@ -23,7 +23,11 @@ export function AvatarUploader({ onUploadSuccess }: AvatarUploaderProps) {
     >
       {({ open }) => {
         return (
-          <Button className="w-full" variant="outline" onClick={() => open()}>
+          <Button
+            className="w-full bg-[#1c1f26] border-[#242b38]"
+            variant="outline"
+            onClick={() => open()}
+          >
             Upload Avatar
           </Button>
         );

@@ -23,7 +23,7 @@ export default function StatusSelector({
       onValueChange={(value) => handleChange("status", value)}
       value={status}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px] border-[#242b38] border-3">
         <SelectValue defaultValue={status} />
       </SelectTrigger>
       <SelectContent>

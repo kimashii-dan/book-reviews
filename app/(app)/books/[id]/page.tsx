@@ -1,6 +1,6 @@
 import BookComponent from "@/components/suspended/BookComponent";
 import { SkeletonBook } from "@/components/loadingUI/SkeletonBook";
-import BackButton from "@/components/ui/BackButton";
+import BackButton from "@/components/BackButton";
 import { Suspense } from "react";
 export default async function BookPage({
   params,

@@ -41,20 +41,30 @@ export function PaginationComponent({
 
         {prevPage > 0 && (
           <PaginationItem>
-            <PaginationLink href={`${baseUrl}&page=${prevPage}`}>
+            <PaginationLink
+              className="bg-[#1e2531] text-white border-none"
+              href={`${baseUrl}&page=${prevPage}`}
+            >
               {prevPage}
             </PaginationLink>
           </PaginationItem>
         )}
 
         <PaginationItem>
-          <PaginationLink href="#" isActive>
+          <PaginationLink
+            className="bg-[#1e2531] text-white border-none"
+            href="#"
+            isActive
+          >
             {currentPage}
           </PaginationLink>
         </PaginationItem>
 
         <PaginationItem>
-          <PaginationLink href={`${baseUrl}&page=${nextPage}`}>
+          <PaginationLink
+            className="bg-[#1e2531] text-white border-none"
+            href={`${baseUrl}&page=${nextPage}`}
+          >
             {nextPage}
           </PaginationLink>
         </PaginationItem>

@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 const openSans = Open_Sans({
-  variable: "--font-open-sans",
   subsets: ["latin"],
 });
 
@@ -20,8 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${openSans.className} antialiased `}>
+    <html className="scroll-smooth" lang="en">
+      <body
+        className={`${openSans.className} antialiased w-full bg-[#0d0f15] text-[#e4e6eb] scroll-smooth`}
+      >
         {children}
         <Toaster />
       </body>

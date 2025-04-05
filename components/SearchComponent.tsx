@@ -4,7 +4,7 @@ import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useTransition } from "react";
-import BackButton from "./ui/BackButton";
+import BackButton from "./BackButton";
 
 export default function SearchComponent({ search }: { search: string }) {
   const router = useRouter();
@@ -18,14 +18,14 @@ export default function SearchComponent({ search }: { search: string }) {
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center w-full mt-10">
-        <h1 className="text-4xl font-bold">Library</h1>
-        <div className="flex flex-row gap-2 w-[40%] relative">
+      <div className="flex sm:flex-row flex-col justify-between items-center w-full mt-10">
+        <h1 className=" text-4xl font-bold mb-10 sm:mb-0">Library</h1>
+        <div className="flex flex-row gap-2 sm:w-[250px] w-full relative">
           <Input
             name="search"
             type="text"
             placeholder="Search for any book"
-            className="p-4 text-base placeholder:text-base"
+            className="p-4 text-base placeholder:text-base border-[#292e38] placeholder:text-[#a0a8b7]"
             defaultValue={search}
             onChange={(e) => handleSearch(e.target.value)}
           />

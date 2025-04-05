@@ -30,7 +30,7 @@ type CreateReviewType = Prisma.ReviewCreateManyInput;
 
 type Session = typeof authClient.$Infer.Session;
 
-type ReadingNowBooksType = Prisma.ReviewGetPayload<{
+type UserBooksType = Prisma.ReviewGetPayload<{
   select: {
     book: {
       select: {
@@ -54,5 +54,5 @@ export type {
   BookGoogleAPIType,
   Session,
   Filter,
-  ReadingNowBooksType,
+  UserBooksType,
 };

@@ -45,7 +45,7 @@ export default async function BookComponent({
           orderBy: { createdAt: "desc" },
         },
       },
-      cacheStrategy: { swr: 60 },
+      cacheStrategy: { swr: 30 },
     }),
   ]);
 
@@ -69,7 +69,7 @@ export default async function BookComponent({
   return (
     <>
       <div className="w-full max-w-[1800px] mx-auto">
-        <Card className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 items-start p-4">
+        <Card className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-8 items-start p-4 bg-[#1c1f26] border-[#292e38] border-2 text-[#e4e6eb]">
           <CardContent className="relative w-full pb-[150%] mb-4">
             <Image
               src={book.cover || "/images/cover.jpg"}
@@ -96,7 +96,7 @@ export default async function BookComponent({
                   </span>
                 </div>
               )}
-              <CardDescription className="w-full text-xl italic ">
+              <CardDescription className="w-full text-xl italic text-[#a0a8b7]">
                 {book.author} ({book.publishDate})
               </CardDescription>
               <CardContent className="p-0 w-full flex justify-between  text-lg">
@@ -123,8 +123,8 @@ export default async function BookComponent({
               >
                 <CarouselContent className="my-5 h-[225px] mb-3">
                   {sortedReviews.map((review) => (
-                    <CarouselItem key={review.id} className="basis-1/2">
-                      <Card className="h-full gap-3">
+                    <CarouselItem key={review.id} className="basis-1/2 ">
+                      <Card className="h-full gap-3 bg-[#1c1f26] border-[#292e38] border-2 text-[#e4e6eb]">
                         <CardHeader>
                           {review.user.id === session?.user.id ? (
                             <CardTitle className="text-xl">
@@ -156,7 +156,7 @@ export default async function BookComponent({
                             <span className="text-yellow-500 text-xl">
                               {"★".repeat(review.rating)}
                             </span>
-                            <span className="text-gray-400 text-xl">
+                            <span className="text-[#a0a8b7] text-xl">
                               {"★".repeat(5 - review.rating)}
                             </span>
                           </div>
@@ -164,7 +164,7 @@ export default async function BookComponent({
                             {review.comment}
                           </CardTitle>
                           <div className="flex gap-3 text-lg mt-3 flex-wrap">
-                            <span className="text-gray-600">
+                            <span className="text-[#a0a8b7]">
                               {review.status}
                             </span>
                             {review.status === "reading" && (
@@ -186,12 +186,12 @@ export default async function BookComponent({
                   ))}
                 </CarouselContent>
                 <div className="flex justify-center gap-4 mt-4">
-                  <CarouselPrevious className="relative top-0 transform-none left-35" />
-                  <CarouselNext className="relative top-0 transform-none left-35" />
+                  <CarouselPrevious className="relative top-0 transform-none left-35 bg-[#0d0f15]" />
+                  <CarouselNext className="relative top-0 transform-none left-35 bg-[#0d0f15]" />
                 </div>
               </Carousel>
             ) : (
-              <div className="px-6 mt-4 text-lg text-gray-600">
+              <div className="px-6 mt-4 text-lg text-[#a0a8b7]">
                 <p>There are no reviews yet. Be first to review!</p>
               </div>
             )}

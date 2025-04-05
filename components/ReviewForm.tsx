@@ -102,7 +102,7 @@ export default function ReviewForm({
 
   return (
     <div className="flex w-full justify-center items-center my-10">
-      <Card className="w-full">
+      <Card className="w-full bg-[#1c1f26] text-[#e4e6eb] border-[#292e38] border-2">
         <form onSubmit={handleSubmit}>
           <CardHeader className="gap-0 mb-10">
             <CardTitle className="text-2xl m-0">
@@ -127,7 +127,7 @@ export default function ReviewForm({
             </div>
 
             <Textarea
-              className="h-28"
+              className="h-28 border-[#242b38] border-3"
               placeholder="Write comment..."
               onChange={(e) => handleChange("comment", e.target.value)}
               value={review.comment}
@@ -138,7 +138,11 @@ export default function ReviewForm({
                 status={review.status}
                 handleChange={handleChange}
               />
-              <Button className="" type="submit" disabled={isPending}>
+              <Button
+                className="bg-[#2563eb]"
+                type="submit"
+                disabled={isPending}
+              >
                 {isPending ? (
                   <Loader2 className="animate-spin" size={48} />
                 ) : (
