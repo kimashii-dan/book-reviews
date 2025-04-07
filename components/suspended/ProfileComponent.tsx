@@ -1,6 +1,5 @@
 import { AvatarUploader } from "@/components/AvatarUploader";
 import prisma from "@/lib/db";
-import { revalidatePath } from "next/cache";
 import React from "react";
 import Image from "next/image";
 import { Check, Mail } from "lucide-react";
@@ -10,13 +9,13 @@ import { EditProfileDialog } from "@/components/EditProfileDialog";
 import { getServerSession } from "@/app/actions";
 import { Session } from "@/app/types";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function ProfileComponent() {
   const session: Session | null = await getServerSession();
   if (!session) return redirect("/sign-in");
   const user = await prisma.user.findFirst({
     where: { id: session?.user.id },
-    cacheStrategy: { swr: 30 },
   });
 
   async function saveAvatar(url: string) {
@@ -31,8 +30,9 @@ export default async function ProfileComponent() {
       data: { image: url },
     });
 
-    console.log(updatedUser);
     revalidatePath("/profile");
+
+    console.log(updatedUser);
   }
 
   return (

@@ -75,7 +75,7 @@ export default async function HomeComponent() {
               className="object-cover"
               quality={100}
               placeholder="blur"
-              blurDataURL="/images/placeholder.jpg"
+              blurDataURL="/placeholder.svg"
               loading="lazy"
             />
           </div>

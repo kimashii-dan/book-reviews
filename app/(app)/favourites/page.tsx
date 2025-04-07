@@ -11,7 +11,7 @@ export default function FavouritePage() {
   return (
     <div className="flex flex-col  w-9/12 mx-auto gap-8 ">
       <h1 className="text-left w-full mt-10 text-4xl font-bold">
-        ⭐Favourite books
+        🌟Favourite books
       </h1>
 
       <Suspense fallback={<SkeletonBookList />}>
@@ -41,13 +41,13 @@ async function FavouriteComponent() {
         },
       },
     },
-    cacheStrategy: { swr: 30 },
+    cacheStrategy: { ttl: 20, swr: 60 },
   });
 
   if (reviews.length === 0)
     return (
       <div className="h-[50vh] flex items-center justify-center text-center">
-        You have no books you have finished.
+        You don&apos;t have favourite books yet.
       </div>
     );
 

@@ -26,7 +26,7 @@ export default function LibraryBookCard({ book }: { book: Book }) {
           className="object-cover"
           quality={100}
           placeholder="blur"
-          blurDataURL="/images/placeholder.jpg"
+          blurDataURL="/placeholder.svg"
           loading="lazy"
         />
       </div>
@@ -34,7 +34,7 @@ export default function LibraryBookCard({ book }: { book: Book }) {
       {!book.averageRating ? (
         <Button
           asChild
-          className="w-full max-w-[225px] bg-[#2563eb] text-white"
+          className="w-full max-w-[225px] bg-[#2563eb] hover:bg-[#1644a8] text-white"
         >
           <Link href={`/books/${book.id}`}>Go to book page</Link>
         </Button>
@@ -42,7 +42,7 @@ export default function LibraryBookCard({ book }: { book: Book }) {
         <div className={"w-full flex flex-row justify-between items-center"}>
           <Button
             asChild
-            className="w-full max-w-[70%] bg-[#2563eb] text-white"
+            className="w-full max-w-[70%] bg-[#2563eb] hover:bg-[#1644a8] text-white"
           >
             <Link href={`/books/${book.id}`}>Go to book page</Link>
           </Button>

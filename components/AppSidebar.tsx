@@ -78,7 +78,7 @@ function SideHeader({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground "
+              className="data-[state=open]:bg-[#0d0f15] data-[state=open]:text-white "
             >
               <div className="w-8 h-8 rounded-full overflow-hidden relative flex items-center justify-center">
                 {session.user.image ? (
@@ -136,14 +136,15 @@ function SideHeader({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-[#292e38]" />
-            <DropdownMenuItem>
-              {session.user.emailVerified ? (
-                <BadgeCheck />
-              ) : (
-                <BadgeAlert color="red" />
-              )}
-
-              <Link href="/profile">Account</Link>
+            <DropdownMenuItem className="active:bg-white focus:outline-none focus:bg-white focus:text-black active:text-black">
+              <Link className="w-full flex gap-2 items-center" href="/profile">
+                {session.user.emailVerified ? (
+                  <BadgeCheck />
+                ) : (
+                  <BadgeAlert color="red" />
+                )}
+                <span>Account</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-[#292e38]" />
             <SignOutButton />

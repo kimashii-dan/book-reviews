@@ -139,7 +139,7 @@ export default function ReviewForm({
                 handleChange={handleChange}
               />
               <Button
-                className="bg-[#2563eb]"
+                className="bg-[#2563eb] hover:bg-[#1644a8]"
                 type="submit"
                 disabled={isPending}
               >

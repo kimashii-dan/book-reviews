@@ -22,7 +22,6 @@ import { Button } from "../ui/button";
 import { BookWithReviewsType, Session } from "@/app/types";
 import { getServerSession } from "@/app/actions";
 import { Heart } from "lucide-react";
-
 export default async function BookComponent({
   params,
 }: {
@@ -45,7 +44,7 @@ export default async function BookComponent({
           orderBy: { createdAt: "desc" },
         },
       },
-      cacheStrategy: { swr: 30 },
+      cacheStrategy: { ttl: 20, swr: 60 },
     }),
   ]);
 
@@ -79,25 +78,30 @@ export default async function BookComponent({
               className="object-cover"
               quality={100}
               placeholder="blur"
-              blurDataURL="/images/placeholder.jpg"
+              blurDataURL="/placeholder.svg"
               loading="lazy"
             />
           </CardContent>
 
           <div className="w-full flex flex-col justify-around h-full">
-            <CardHeader className=" p-0 flex flex-col gap-5">
-              <CardTitle className="text-3xl w-full">{book.title}</CardTitle>
+            <CardHeader className=" p-0 flex flex-col gap-5 md:text-base">
+              <CardTitle className="text-3xl w-full">
+                {book.title} ({book.publishDate})
+              </CardTitle>
               {isFavourite && (
                 <div className="text-red-500 flex flex-row gap-2 items-center">
                   <p>In favourites</p>
-
                   <span>
                     <Heart color="red" fill="red" size={15} />
                   </span>
                 </div>
               )}
-              <CardDescription className="w-full text-xl italic text-[#a0a8b7]">
-                {book.author} ({book.publishDate})
+              <CardDescription className="w-full text-xl font-semibold italic text-slate-400 underline">
+                <Link
+                  href={`/books?searchBy=author&query=${book.author}&page=1`}
+                >
+                  {book.author}
+                </Link>
               </CardDescription>
               <CardContent className="p-0 w-full flex justify-between  text-lg">
                 <div className="flex items-center gap-2">
@@ -199,7 +203,7 @@ export default async function BookComponent({
         </Card>
       </div>
 
-      <div className="w-full max-w-[1800px] mx-auto p-4 relative">
+      <div className="w-full max-w-[1800px] mx-auto  relative">
         <div className={`${!session ? "blur-sm" : ""}`}>
           <ReviewForm book={book} editReview={editReview} />
         </div>

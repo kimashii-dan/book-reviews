@@ -37,7 +37,7 @@ async function ReadingNowComponent() {
         },
       },
     },
-    cacheStrategy: { swr: 30 },
+    cacheStrategy: { ttl: 20, swr: 60 },
   });
 
   if (reviews.length === 0)

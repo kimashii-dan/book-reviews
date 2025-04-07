@@ -3,10 +3,11 @@ import { BookAPIType, BookGoogleAPIType } from "../types";
 import prisma from "@/lib/db";
 
 export async function findAPIBooksByTitle(
-  title: string,
+  searchBy: string,
+  query: string,
   offset: number
 ): Promise<{ books: Book[] | null; totalResults: number }> {
-  if (!title) return { books: null, totalResults: 0 };
+  if (!query) return { books: null, totalResults: 0 };
 
   try {
     const apiKey = process.env.GOOGLE_API_KEY;
@@ -15,7 +16,7 @@ export async function findAPIBooksByTitle(
     const apiUrl = new URL("https://www.googleapis.com/books/v1/volumes");
 
     apiUrl.search = new URLSearchParams({
-      q: title,
+      q: `in${searchBy}:${query}`,
       startIndex: offset.toString(),
       maxResults: "6",
       fields:

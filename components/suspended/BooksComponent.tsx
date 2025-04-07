@@ -5,19 +5,21 @@ import { PaginationComponent } from "../PaginationComponent";
 import LibraryBookCard from "../LibraryBookCard";
 
 export default async function BooksComponent({
-  search,
+  searchBy,
+  query,
   page,
 }: {
-  search?: string;
+  searchBy?: string;
+  query?: string;
   page?: number;
 }) {
   let books: Book[] | null = null;
   let totalResults = 0;
   const limit = 6;
 
-  if (search && page) {
+  if (searchBy && query && page) {
     const offset = (page - 1) * limit;
-    const data = await findAPIBooksByTitle(search, offset);
+    const data = await findAPIBooksByTitle(searchBy, query, offset);
     books = data?.books || null;
     totalResults = data?.totalResults || 0;
   } else {
@@ -25,24 +27,25 @@ export default async function BooksComponent({
       orderBy: {
         title: "asc",
       },
+      cacheStrategy: { ttl: 20, swr: 60 },
     });
   }
 
   if (!books)
     return (
       <div className="h-[50vh] flex items-center justify-center text-center">
-        Books with &quot;{search}&quot; title don&apos;t exist {":("}
+        {searchBy} with &quot;{query}&quot; title don&apos;t exist {":("}
       </div>
     );
 
   return (
     <>
-      {search && (
+      {query && (
         <div className="w-full text-gray-500 ">
           <p>
             {totalResults} results for &quot;
             <em>
-              <b className="text-white">{search}</b>
+              <b className="text-white">{query}</b>
             </em>
             &quot;:
           </p>
@@ -55,11 +58,11 @@ export default async function BooksComponent({
           </div>
         ))}
       </div>
-      {search && (
+      {query && (
         <PaginationComponent
           totalPages={totalResults / limit}
           currentPage={Number(page)}
-          baseUrl={`/books?search=${search}`}
+          baseUrl={`/books?searchBy=${searchBy}&query=${query}`}
         />
       )}
     </>

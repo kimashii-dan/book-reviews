@@ -43,7 +43,7 @@ export function EditProfileDialog({ user }: { user: User | null | undefined }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild className="w-full">
-        <Button className="bg-[#1c1f26] border-[#242b38]" variant="outline">
+        <Button variant="secondary" className="w-full mt-5">
           Edit Profile
         </Button>
       </DialogTrigger>
@@ -81,7 +81,12 @@ export function EditProfileDialog({ user }: { user: User | null | undefined }) {
               Max 200 characters
             </p>
           </div>
-          <Button className="w-full mt-5" type="submit" disabled={isPending}>
+          <Button
+            variant="secondary"
+            className="w-full mt-5"
+            type="submit"
+            disabled={isPending}
+          >
             {isPending ? (
               <Loader2 className="animate-spin" size={48} />
             ) : (

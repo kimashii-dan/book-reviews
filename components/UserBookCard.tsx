@@ -25,13 +25,16 @@ export default function UserBookCard({ review }: { review: UserBooksType }) {
           className="object-cover"
           quality={100}
           placeholder="blur"
-          blurDataURL="/images/placeholder.jpg"
+          blurDataURL="/placeholder.svg"
           loading="lazy"
         />
       </div>
 
       <div className={"w-full flex flex-row justify-between items-center"}>
-        <Button asChild className="w-full max-w-[70%] bg-[#2563eb] text-white">
+        <Button
+          asChild
+          className="w-full max-w-[70%] bg-[#2563eb] hover:bg-[#1644a8] text-white"
+        >
           <Link href={`/books/${review.book.id}`}>Go to book page</Link>
         </Button>
         <p className="text-[#a0a8b7]">

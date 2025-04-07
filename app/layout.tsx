@@ -19,7 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="scroll-smooth" lang="en">
+    <html
+      style={{ scrollbarGutter: "stable" }}
+      className="scroll-smooth"
+      lang="en"
+    >
       <body
         className={`${openSans.className} antialiased w-full bg-[#0d0f15] text-[#e4e6eb] scroll-smooth`}
       >

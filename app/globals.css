@@ -79,6 +79,12 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --color-bg-light: #161b22;
+  --color-bg-dark: #1c1f26;
+  --color-bg-hover: #292e38;
+  --color-text-light: #e4e6eb;
+  --color-text-dark: #ffffff;
+  --color-border: #1e2531;
 }
 
 .dark {
@@ -114,6 +120,12 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(0.279 0.041 260.031);
   --sidebar-ring: oklch(0.446 0.043 257.281);
+  --color-bg-light: #161b22;
+  --color-bg-dark: #1c1f26;
+  --color-bg-hover: #292e38;
+  --color-text-light: #e4e6eb;
+  --color-text-dark: #ffffff;
+  --color-border: #1e2531;
 }
 
 @layer base {
@@ -139,8 +151,4 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-}
-
-.float-text {
-  @apply text-center text-xl font-semibold text-gray-800;
 }

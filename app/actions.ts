@@ -5,6 +5,7 @@ import { BookWithReviewsType, CreateReviewType, Session } from "./types";
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export const getServerSession = async (): Promise<Session | null> => {
@@ -93,7 +94,35 @@ export async function submitReview(
       },
     });
 
-    revalidatePath("/");
+    // let toInvalidate = "";
+
+    // if (reviewData.status === "reading") {
+    //   toInvalidate = "reading";
+    // } else {
+    //   toInvalidate = "haveRead";
+    // }
+
+    // try {
+    //   await prisma.$accelerate.invalidate({
+    //     tags: ["book"],
+    //   });
+    // } catch (e) {
+    //   if (e instanceof Prisma.PrismaClientKnownRequestError) {
+    //     // The .code property can be accessed in a type-safe manner
+    //     if (e.code === "P6003") {
+    //       console.log(
+    //         "You've reached the cache invalidation rate limit. Please try again shortly."
+    //       );
+    //     }
+    //   }
+    //   throw e;
+    // }
+
+    revalidatePath(`/${reviewData.status}`);
+    revalidatePath(`/book/${bookData.id}`);
+    revalidatePath("/favourites");
+    revalidatePath("/books");
+
     return {
       success: true,
       message: "Review submitted successfully!",
@@ -115,6 +144,7 @@ export async function saveChanges(userId: string, formData: FormData) {
     });
 
     revalidatePath("/profile");
+
     return {
       success: true,
       message: "Profile updated successfully",
