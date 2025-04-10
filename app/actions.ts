@@ -1,14 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server";
 import prisma from "@/lib/db";
 import { BookWithReviewsType, CreateReviewType, Session } from "./types";
 
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { userService } from "./services/user.service";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+import { extractPublicId } from "./utils/extractPublicId";
+import cloudinary from "@/lib/cloudinary";
+import { User } from "@prisma/client";
 
-export const getServerSession = async (): Promise<Session | null> => {
+export async function getServerSession(): Promise<Session | null> {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -17,10 +19,25 @@ export const getServerSession = async (): Promise<Session | null> => {
       return null;
     }
     return session;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return null;
   }
-};
+}
+
+export async function saveAvatar(url: string, user: User | null) {
+  "use server";
+  if (user?.image) {
+    const publicId = extractPublicId(user.image);
+    if (!publicId) return "Error deleting old image from storage";
+    await cloudinary.uploader.destroy(publicId);
+  }
+  const updatedUser = await userService.updateProfileImage(user?.id, url);
+
+  revalidatePath("/profile");
+
+  console.log(updatedUser);
+}
 
 export async function submitReview(
   bookData: BookWithReviewsType,
@@ -94,30 +111,6 @@ export async function submitReview(
       },
     });
 
-    // let toInvalidate = "";
-
-    // if (reviewData.status === "reading") {
-    //   toInvalidate = "reading";
-    // } else {
-    //   toInvalidate = "haveRead";
-    // }
-
-    // try {
-    //   await prisma.$accelerate.invalidate({
-    //     tags: ["book"],
-    //   });
-    // } catch (e) {
-    //   if (e instanceof Prisma.PrismaClientKnownRequestError) {
-    //     // The .code property can be accessed in a type-safe manner
-    //     if (e.code === "P6003") {
-    //       console.log(
-    //         "You've reached the cache invalidation rate limit. Please try again shortly."
-    //       );
-    //     }
-    //   }
-    //   throw e;
-    // }
-
     revalidatePath(`/${reviewData.status}`);
     revalidatePath(`/book/${bookData.id}`);
     revalidatePath("/favourites");
@@ -135,13 +128,9 @@ export async function submitReview(
 
 export async function saveChanges(userId: string, formData: FormData) {
   try {
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        name: formData.get("name") as string,
-        bio: formData.get("bio") as string,
-      },
-    });
+    const name = formData.get("name") as string;
+    const bio = formData.get("bio") as string;
+    const updatedUser = await userService.updateNameAndBio(userId, name, bio);
 
     revalidatePath("/profile");
 

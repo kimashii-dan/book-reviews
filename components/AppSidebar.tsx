@@ -21,7 +21,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -39,16 +38,19 @@ import {
 import SignOutButton from "./SignOutButton";
 import { Session } from "@/app/types";
 
-export function AppSidebar() {
+export default function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
-  const { data: session } = authClient.useSession();
   const { isMobile } = useSidebar();
 
   return (
     <Sidebar className="text-white border-black">
       {session && (
         <SidebarHeader className="bg-[#161b22]">
-          <SideHeader session={session} isMobile={isMobile} />
+          <SideHeader
+            pathname={pathname}
+            session={session}
+            isMobile={isMobile}
+          />
         </SidebarHeader>
       )}
 
@@ -67,9 +69,11 @@ export function AppSidebar() {
 function SideHeader({
   session,
   isMobile,
+  pathname,
 }: {
   session: Session;
   isMobile: boolean;
+  pathname: string;
 }) {
   return (
     <SidebarMenu>
@@ -77,13 +81,15 @@ function SideHeader({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
+              className={`${
+                pathname === "/profile" ? "bg-[#0d0f15]" : "bg-transparent"
+              }`}
               size="lg"
-              className="data-[state=open]:bg-[#0d0f15] data-[state=open]:text-white "
             >
               <div className="w-8 h-8 rounded-full overflow-hidden relative flex items-center justify-center">
-                {session.user.image ? (
+                {session.user.userImage ? (
                   <Image
-                    src={session.user.image}
+                    src={session.user.userImage}
                     alt="Your avatar"
                     fill
                     className="object-cover"
@@ -97,9 +103,11 @@ function SideHeader({
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {session.user.name}
+                  {session.user.userName}
                 </span>
-                <span className="truncate text-xs">{session.user.email}</span>
+                <span className="truncate text-xs">
+                  {session.user.userEmail}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -113,9 +121,9 @@ function SideHeader({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <div className="w-8 h-8 rounded-full overflow-hidden relative flex items-center justify-center">
-                  {session.user.image ? (
+                  {session.user.userImage ? (
                     <Image
-                      src={session.user.image}
+                      src={session.user.userImage}
                       alt="Your avatar"
                       fill
                       className="object-cover"
@@ -129,22 +137,29 @@ function SideHeader({
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
-                    {session.user.name}
+                    {session.user.userName}
                   </span>
-                  <span className="truncate text-xs">{session.user.email}</span>
+                  <span className="truncate text-xs">
+                    {session.user.userEmail}
+                  </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-[#292e38]" />
-            <DropdownMenuItem className="active:bg-white focus:outline-none focus:bg-white focus:text-black active:text-black">
-              <Link className="w-full flex gap-2 items-center" href="/profile">
-                {session.user.emailVerified ? (
-                  <BadgeCheck />
-                ) : (
-                  <BadgeAlert color="red" />
-                )}
-                <span>Account</span>
-              </Link>
+            <DropdownMenuItem>
+              <Button className="w-full light-button">
+                <Link
+                  className="w-full flex gap-2 items-center"
+                  href="/profile"
+                >
+                  {session.user.userIsVerified ? (
+                    <BadgeCheck />
+                  ) : (
+                    <BadgeAlert color="red" />
+                  )}
+                  <span>Account</span>
+                </Link>
+              </Button>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-[#292e38]" />
             <SignOutButton />
@@ -161,12 +176,18 @@ function SideMainContent({ pathname }: { pathname: string }) {
       <SidebarGroupLabel className="text-white">
         Search for books
       </SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu className="gap-2">
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            className={`${
+              pathname === "/" ? "bg-[#0d0f15]" : "bg-transparent"
+            } sidebar-button`}
+          >
             <Link
               href="/"
-              className={`${pathname === "/" ? "text-white" : "text-gray-400"}`}
+              className={`${
+                pathname === "/" ? "text-white" : "text-gray-400"
+              } flex items-center gap-2 w-full`}
             >
               <Home />
               <p className="text-base">Home</p>
@@ -175,12 +196,16 @@ function SideMainContent({ pathname }: { pathname: string }) {
         </SidebarMenuItem>
 
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            className={`${
+              pathname === "/books" ? "bg-[#0d0f15]" : "bg-transparent"
+            } sidebar-button`}
+          >
             <Link
               href="/books"
               className={`${
                 pathname === "/books" ? "text-white" : "text-gray-400"
-              } flex items-center gap-2`}
+              } flex items-center gap-2 w-full`}
             >
               <Search />
               <p className="text-base">Search</p>
@@ -196,14 +221,18 @@ function SideUserBooks({ pathname }: { pathname: string }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel className="text-white">Your books</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu className="gap-2">
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            className={`${
+              pathname === "/favourites" ? "bg-[#0d0f15]" : "bg-transparent"
+            } sidebar-button`}
+          >
             <Link
               href="/favourites"
               className={`${
                 pathname === "/favourites" ? "text-white" : "text-gray-400"
-              } flex items-center gap-2`}
+              } flex items-center gap-2 w-full`}
             >
               <BookHeart />
               <p className="text-base">Favourites</p>
@@ -212,12 +241,16 @@ function SideUserBooks({ pathname }: { pathname: string }) {
         </SidebarMenuItem>
 
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            className={`${
+              pathname === "/reading" ? "bg-[#0d0f15]" : "bg-transparent"
+            } sidebar-button`}
+          >
             <Link
               href="/reading"
               className={`${
                 pathname === "/reading" ? "text-white" : "text-gray-400"
-              } flex items-center gap-2`}
+              } flex items-center gap-2 w-full`}
             >
               <BookMarkedIcon />
               <p className="text-base">Reading now</p>
@@ -226,12 +259,16 @@ function SideUserBooks({ pathname }: { pathname: string }) {
         </SidebarMenuItem>
 
         <SidebarMenuItem>
-          <SidebarMenuButton asChild>
+          <SidebarMenuButton
+            className={`${
+              pathname === "/haveRead" ? "bg-[#0d0f15]" : "bg-transparent"
+            } sidebar-button`}
+          >
             <Link
               href="/haveRead"
               className={`${
                 pathname === "/haveRead" ? "text-white" : "text-gray-400"
-              } flex items-center gap-2`}
+              } flex items-center gap-2 w-full`}
             >
               <BookCheck />
               <p className="text-base">Have read</p>
@@ -248,9 +285,7 @@ function SideFooter({ session }: { session: Session | null }) {
     <SidebarMenu>
       <SidebarMenuItem>
         {session ? (
-          <SidebarMenuButton asChild>
-            <SignOutButton />
-          </SidebarMenuButton>
+          <SignOutButton />
         ) : (
           <Button
             className=" w-full bg-[#1e2531] border-none"

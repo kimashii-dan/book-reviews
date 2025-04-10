@@ -8,9 +8,9 @@ export default function BackButton() {
 
   return (
     <Button
-      className="bg-[#1e2531] text-white border-none"
+      className="secondary-button"
       onClick={() => router.back()}
-      variant="outline"
+      variant="default"
     >
       ← Back
     </Button>

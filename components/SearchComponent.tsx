@@ -51,8 +51,8 @@ export default function SearchComponent({
               name="query"
               type="text"
               placeholder={`Search for any book by ${search.searchBy}`}
-              className="p-4 pr-12 text-base placeholder:text-base border-[#292e38] placeholder:text-[#a0a8b7]"
-              defaultValue={search.query}
+              className="p-4 pr-12 text-base placeholder:text-base border-[#292e38] border-2 placeholder:text-[#a0a8b7]"
+              value={search.query}
               onChange={(e) => {
                 const updated = { ...search, query: e.target.value };
                 setSearch(updated);
@@ -77,7 +77,7 @@ export default function SearchComponent({
                 handleSearch(updated);
               }
             }}
-            defaultValue={search.searchBy}
+            value={search.searchBy}
           >
             <SelectTrigger className="w-[100px] border-[#242b38] border-2 text-white">
               <SelectValue />

@@ -9,8 +9,9 @@ import {
   PaginationLink,
 } from "@/components/ui/pagination";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
-export function PaginationComponent({
+export default function PaginationComponent({
   currentPage,
   baseUrl,
   totalPages,
@@ -20,8 +21,11 @@ export function PaginationComponent({
   baseUrl: string;
 }) {
   const router = useRouter();
+  const [, startTransition] = useTransition();
   const handlePageChange = (newPage: number) => {
-    router.push(`${baseUrl}&page=${newPage}`);
+    startTransition(() => {
+      router.push(`${baseUrl}&page=${newPage}`);
+    });
   };
 
   const prevPage = currentPage - 1;
@@ -39,17 +43,6 @@ export function PaginationComponent({
           </PaginationItem>
         )}
 
-        {prevPage > 0 && (
-          <PaginationItem>
-            <PaginationLink
-              className="bg-[#1e2531] text-white border-none"
-              href={`${baseUrl}&page=${prevPage}`}
-            >
-              {prevPage}
-            </PaginationLink>
-          </PaginationItem>
-        )}
-
         <PaginationItem>
           <PaginationLink
             className="bg-[#1e2531] text-white border-none"
@@ -57,15 +50,6 @@ export function PaginationComponent({
             isActive
           >
             {currentPage}
-          </PaginationLink>
-        </PaginationItem>
-
-        <PaginationItem>
-          <PaginationLink
-            className="bg-[#1e2531] text-white border-none"
-            href={`${baseUrl}&page=${nextPage}`}
-          >
-            {nextPage}
           </PaginationLink>
         </PaginationItem>
 

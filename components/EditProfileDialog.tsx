@@ -20,7 +20,11 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useRouter } from "next/navigation";
 
-export function EditProfileDialog({ user }: { user: User | null | undefined }) {
+export default function EditProfileDialog({
+  user,
+}: {
+  user: User | null | undefined;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -43,9 +47,7 @@ export function EditProfileDialog({ user }: { user: User | null | undefined }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild className="w-full">
-        <Button variant="secondary" className="w-full mt-5">
-          Edit Profile
-        </Button>
+        <Button className="w-full mt-5 secondary-button">Edit Profile</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] bg-[#1c1f26] border-[#242b38]">
         <DialogHeader>

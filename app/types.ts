@@ -1,4 +1,3 @@
-import { authClient } from "@/lib/auth-client";
 import { Prisma } from "@prisma/client";
 
 interface BookAPIType {
@@ -26,9 +25,26 @@ type BookWithReviewsType = Prisma.BookGetPayload<{
   include: { reviews: { include: { user: true } } };
 }>;
 
+type ReviewWithBookType = Prisma.ReviewGetPayload<{
+  include: {
+    user: true;
+  };
+}>;
+
 type CreateReviewType = Prisma.ReviewCreateManyInput;
 
-type Session = typeof authClient.$Infer.Session;
+type Session = {
+  user: {
+    userId: string;
+    userImage: string | null | undefined;
+    userName: string;
+    userEmail: string;
+    userIsVerified: boolean;
+  };
+  session: {
+    id: string;
+  };
+};
 
 type UserBooksType = Prisma.ReviewGetPayload<{
   select: {
@@ -55,4 +71,5 @@ export type {
   Session,
   Filter,
   UserBooksType,
+  ReviewWithBookType,
 };

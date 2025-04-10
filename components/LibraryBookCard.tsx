@@ -4,6 +4,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Book } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import ButtonToAuthor from "./ButtonToAuthor";
 
 export default function LibraryBookCard({ book }: { book: Book }) {
   return (
@@ -13,7 +14,7 @@ export default function LibraryBookCard({ book }: { book: Book }) {
           {book.title}
         </CardTitle>
         <CardDescription className="text-base truncate text-[#a0a8b7]">
-          {book.author} ({book.publishDate})
+          <ButtonToAuthor author={book.author} /> ({book.publishDate})
         </CardDescription>
       </div>
 
@@ -32,18 +33,12 @@ export default function LibraryBookCard({ book }: { book: Book }) {
       </div>
 
       {!book.averageRating ? (
-        <Button
-          asChild
-          className="w-full max-w-[225px] bg-[#2563eb] hover:bg-[#1644a8] text-white"
-        >
+        <Button asChild className="w-full max-w-[225px] primary-button">
           <Link href={`/books/${book.id}`}>Go to book page</Link>
         </Button>
       ) : (
         <div className={"w-full flex flex-row justify-between items-center"}>
-          <Button
-            asChild
-            className="w-full max-w-[70%] bg-[#2563eb] hover:bg-[#1644a8] text-white"
-          >
+          <Button asChild className="w-full max-w-[70%] primary-button">
             <Link href={`/books/${book.id}`}>Go to book page</Link>
           </Button>
           <p className="text-[#a0a8b7]">

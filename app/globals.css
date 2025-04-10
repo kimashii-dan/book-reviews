@@ -1,5 +1,6 @@
+@tailwind utilities;
 @import "tailwindcss";
-
+@import "tailwindcss/preflight";
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
@@ -147,8 +148,90 @@
   }
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
 @layer components {
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
+
+  .animate-appear {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+}
+
+.primary-button {
+  background-color: #2563eb;
+  color: white;
+}
+
+.primary-button:hover,
+.primary-button:focus,
+.primary-button:active {
+  background-color: #1644a8;
+}
+
+.primary-button:focus-visible {
+  outline: 2px solid #1644a8;
+  outline-offset: 2px;
+}
+
+.secondary-button {
+  background-color: #1c1f26;
+  color: white;
+}
+
+.secondary-button:hover,
+.secondary-button:focus,
+.secondary-button:active {
+  background-color: #374151;
+}
+
+.secondary-button:focus-visible {
+  outline: 2px solid #374151;
+  outline-offset: 2px;
+}
+
+.sidebar-button {
+  padding: 20px 10px;
+}
+
+.sidebar-button:hover,
+.sidebar-button:focus,
+.sidebar-button:active {
+  background-color: #0d0f15;
+  color: white;
+}
+
+.sidebar-button:focus-visible {
+  outline: 2px solid #0d0f15;
+  outline-offset: 2px;
+}
+
+.light-button {
+  background-color: transparent;
+  color: white;
+}
+
+.light-button:hover,
+.light-button:focus,
+.light-button:active {
+  background-color: white;
+  color: black;
+}
+
+.light-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
 }

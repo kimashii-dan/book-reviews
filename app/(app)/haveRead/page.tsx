@@ -1,11 +1,11 @@
 import { SkeletonBookList } from "@/components/loadingUI/SkeletonBookList";
 import React, { Suspense } from "react";
-import prisma from "@/lib/db";
 
 import { UserBooksType, Session } from "@/app/types";
-import { getServerSession } from "@/app/actions";
 import { redirect } from "next/navigation";
 import UserBookCard from "@/components/UserBookCard";
+import { bookService } from "@/app/services/book.service";
+import { getServerSession } from "@/app/actions";
 
 export default function HaveReadPage() {
   return (
@@ -22,25 +22,9 @@ export default function HaveReadPage() {
 async function HaveReadComponent() {
   const session: Session | null = await getServerSession();
   if (!session) return redirect("/sign-in");
-  const reviews = await prisma.review.findMany({
-    where: {
-      status: "completed",
-      userId: session?.user.id,
-    },
-    select: {
-      book: {
-        select: {
-          id: true,
-          title: true,
-          author: true,
-          publishDate: true,
-          cover: true,
-          averageRating: true,
-        },
-      },
-    },
-    cacheStrategy: { ttl: 20, swr: 60 },
-  });
+  const reviews = await bookService.getBooksWithHaveReadStatus(
+    session.user.userId
+  );
 
   if (reviews.length === 0)
     return (
@@ -58,13 +42,6 @@ async function HaveReadComponent() {
           </div>
         ))}
       </div>
-      {/* {search && (
-        <PaginationComponent
-          totalPages={totalResults / limit}
-          currentPage={Number(page)}
-          baseUrl={`/books?search=${search}`}
-        />
-      )} */}
     </>
   );
 }

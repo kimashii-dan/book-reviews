@@ -2,19 +2,17 @@
 
 import { CldUploadWidget } from "next-cloudinary";
 import { Button } from "./ui/button";
+import { User } from "@prisma/client";
+import { saveAvatar } from "@/app/actions";
 
-interface AvatarUploaderProps {
-  onUploadSuccess: (url: string) => void;
-}
-
-export function AvatarUploader({ onUploadSuccess }: AvatarUploaderProps) {
+export default function AvatarUploader({ user }: { user: User | null }) {
   return (
     <CldUploadWidget
       uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string}
       signatureEndpoint="/api/sign-cloudinary-params"
       onSuccess={(result) => {
         if (typeof result.info === "object" && "secure_url" in result.info) {
-          onUploadSuccess(result.info.secure_url);
+          saveAvatar(result.info.secure_url, user);
         }
       }}
       options={{
@@ -24,8 +22,7 @@ export function AvatarUploader({ onUploadSuccess }: AvatarUploaderProps) {
       {({ open }) => {
         return (
           <Button
-            variant="secondary"
-            className="w-full mt-5"
+            className="w-full mt-5 secondary-button"
             onClick={() => open()}
           >
             Upload Avatar

@@ -16,7 +16,6 @@ import {
 import { submitReview } from "@/app/actions";
 import { Button } from "./ui/button";
 import { Loader2, Heart } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
 import { BookWithReviewsType, CreateReviewType } from "@/app/types";
 
 export type ReviewFormType = {
@@ -29,9 +28,11 @@ export type ReviewFormType = {
 export default function ReviewForm({
   book,
   editReview,
+  userId,
 }: {
   book: BookWithReviewsType;
   editReview?: CreateReviewType;
+  userId: string | undefined;
 }) {
   const router = useRouter();
   const [review, setReview] = useState<ReviewFormType>({
@@ -55,10 +56,8 @@ export default function ReviewForm({
     console.log(review);
   };
 
-  const { data: session } = authClient.useSession();
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    if (!session) return null;
+    if (!userId) return null;
     event.preventDefault();
 
     const bookData = {
@@ -76,7 +75,7 @@ export default function ReviewForm({
 
     const reviewData = {
       id: editReview?.id,
-      userId: session.user.id,
+      userId: userId,
       comment: review.comment,
       rating: review.rating,
       status: review.status,
@@ -139,7 +138,7 @@ export default function ReviewForm({
                 handleChange={handleChange}
               />
               <Button
-                className="bg-[#2563eb] hover:bg-[#1644a8]"
+                className="primary-button"
                 type="submit"
                 disabled={isPending}
               >
