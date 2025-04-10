@@ -15,6 +15,7 @@ export async function getServerSession(): Promise<Session | null> {
     const session = await auth.api.getSession({
       headers: await headers(),
     });
+    console.log(session);
     if (!session) {
       return null;
     }

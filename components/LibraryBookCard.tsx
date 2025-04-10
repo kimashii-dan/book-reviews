@@ -4,7 +4,6 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Book } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import ButtonToAuthor from "./ButtonToAuthor";
 
 export default function LibraryBookCard({ book }: { book: Book }) {
   return (
@@ -14,7 +13,7 @@ export default function LibraryBookCard({ book }: { book: Book }) {
           {book.title}
         </CardTitle>
         <CardDescription className="text-base truncate text-[#a0a8b7]">
-          <ButtonToAuthor author={book.author} /> ({book.publishDate})
+          {book.author} ({book.publishDate})
         </CardDescription>
       </div>
 

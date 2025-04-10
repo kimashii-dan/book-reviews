@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-md mx-auto text-[#e4e6eb] bg-[#1c1f26] border-[#292e38]">
       <CardHeader>
         <CardTitle>Forgot password</CardTitle>
         <CardDescription>
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleResetPassword)}
-            className="space-y-4"
+            className="flex flex-col gap-5"
           >
             <FormField
               control={form.control}
@@ -78,14 +78,22 @@ export default function ForgotPasswordPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      className="border-[#292e38] border-2"
+                      placeholder="Enter your email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full primary-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (

@@ -81,12 +81,14 @@ function ResetPasswordComponent() {
 
   if (error) {
     return (
-      <div className="w-full max-w-sm mx-auto">Error reseting password</div>
+      <div className="w-full max-w-sm mx-auto text-[#e4e6eb] bg-[#1c1f26] border-[#292e38]">
+        Error reseting password
+      </div>
     );
   }
 
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-md mx-auto text-[#e4e6eb] bg-[#1c1f26] border-[#292e38]">
       <CardHeader>
         <CardTitle>Resetting your password</CardTitle>
         <CardDescription>Create a new password</CardDescription>
@@ -96,7 +98,7 @@ function ResetPasswordComponent() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleResetPassword)}
-            className="space-y-4"
+            className="flex flex-col gap-5"
           >
             <FormField
               control={form.control}
@@ -106,6 +108,7 @@ function ResetPasswordComponent() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-[#292e38] border-2"
                       type="password"
                       placeholder="Enter new password"
                       {...field}
@@ -123,6 +126,7 @@ function ResetPasswordComponent() {
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-[#292e38] border-2"
                       type="password"
                       placeholder="Confirm password"
                       {...field}
@@ -132,7 +136,11 @@ function ResetPasswordComponent() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full primary-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (

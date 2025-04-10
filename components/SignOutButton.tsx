@@ -11,7 +11,7 @@ export default function SignOutButton() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const signOut = async () => {
+  async function signOut() {
     setIsLoading(true);
     try {
       await authClient.signOut({
@@ -19,8 +19,10 @@ export default function SignOutButton() {
           onSuccess: () => {
             toast("Successful sign-out");
             router.push("/");
+            router.refresh();
           },
-          onError: () => {
+          onError: (error) => {
+            console.log(error);
             toast("Sign-out failed. Please try again.");
           },
         },
@@ -31,12 +33,12 @@ export default function SignOutButton() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <div className="">
       <Button
-        onClick={signOut}
+        onClick={() => signOut()}
         disabled={isLoading}
         className="flex flex-row gap-2 justify-start w-full light-button"
       >

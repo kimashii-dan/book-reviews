@@ -24,7 +24,7 @@ export default function FavouritePage() {
 async function FavouriteComponent() {
   const session: Session | null = await getServerSession();
   if (!session) return redirect("/sign-in");
-  const reviews = await bookService.getFavouriteBooks(session.user.userId);
+  const reviews = await bookService.getFavouriteBooks(session.user.id);
 
   if (reviews.length === 0)
     return (

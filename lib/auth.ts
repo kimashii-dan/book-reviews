@@ -2,7 +2,6 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import prisma from "./db";
 import { sendEmail } from "@/app/utils/sendEmail";
-import { customSession } from "better-auth/plugins";
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
@@ -41,18 +40,4 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
-  plugins: [
-    customSession(async ({ user, session }) => {
-      return {
-        user: {
-          userId: user.id,
-          userImage: user.image,
-          userName: user.name,
-          userEmail: user.email,
-          userIsVerified: user.emailVerified,
-        },
-        session,
-      };
-    }),
-  ],
 });

@@ -61,6 +61,7 @@ export default function SignUp() {
             "Successful sign-up! Verification link has been sent to your mail"
           );
           router.push("/");
+          router.refresh();
         },
         onError: (ctx) => {
           toast(ctx.error.message, {
@@ -91,7 +92,7 @@ export default function SignUp() {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-md mx-auto text-[#e4e6eb] bg-[#1c1f26] border-[#292e38]">
       <CardHeader>
         <CardTitle>Sign Up</CardTitle>
         <CardDescription>Create your account to get started.</CardDescription>
@@ -99,7 +100,10 @@ export default function SignUp() {
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -107,7 +111,11 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your name" {...field} />
+                    <Input
+                      className="border-[#292e38] border-2"
+                      placeholder="Enter your name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,7 +128,11 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      className="border-[#292e38] border-2"
+                      placeholder="Enter your email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,6 +146,7 @@ export default function SignUp() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-[#292e38] border-2"
                       type="password"
                       placeholder="Enter your password"
                       {...field}
@@ -151,6 +164,7 @@ export default function SignUp() {
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-[#292e38] border-2"
                       type="password"
                       placeholder="Enter your password again"
                       {...field}
@@ -160,7 +174,11 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full primary-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (
@@ -177,7 +195,6 @@ export default function SignUp() {
 
         <Button
           className="w-full"
-          variant={"outline"}
           onClick={() => signInWithGoogle()}
           disabled={isSubmitting}
         >
@@ -191,7 +208,7 @@ export default function SignUp() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/sign-in" className="text-primary hover:underline">
+          <Link href="/sign-in" className="text-white hover:underline">
             Sign in
           </Link>
         </p>

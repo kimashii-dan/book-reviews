@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 
 interface BookAPIType {
@@ -33,18 +34,7 @@ type ReviewWithBookType = Prisma.ReviewGetPayload<{
 
 type CreateReviewType = Prisma.ReviewCreateManyInput;
 
-type Session = {
-  user: {
-    userId: string;
-    userImage: string | null | undefined;
-    userName: string;
-    userEmail: string;
-    userIsVerified: boolean;
-  };
-  session: {
-    id: string;
-  };
-};
+type Session = typeof auth.$Infer.Session;
 
 type UserBooksType = Prisma.ReviewGetPayload<{
   select: {

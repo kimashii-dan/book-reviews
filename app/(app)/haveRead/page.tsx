@@ -22,9 +22,7 @@ export default function HaveReadPage() {
 async function HaveReadComponent() {
   const session: Session | null = await getServerSession();
   if (!session) return redirect("/sign-in");
-  const reviews = await bookService.getBooksWithHaveReadStatus(
-    session.user.userId
-  );
+  const reviews = await bookService.getBooksWithHaveReadStatus(session.user.id);
 
   if (reviews.length === 0)
     return (

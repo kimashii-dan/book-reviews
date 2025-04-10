@@ -66,19 +66,15 @@ async function BookComponent({
   if (!book) return <div>Book not found</div>;
 
   const editReview = book.reviews.find(
-    (review) => review.userId === session?.user.userId
+    (review) => review.userId === session?.user.id
   );
 
   const sortedReviews = book.reviews.sort((a, b) =>
-    a.userId === session?.user.userId
-      ? -1
-      : b.userId === session?.user.userId
-      ? 1
-      : 0
+    a.userId === session?.user.id ? -1 : b.userId === session?.user.id ? 1 : 0
   );
 
   const isFavourite = book.reviews.some(
-    (review) => review.userId === session?.user.userId && review.isFavourite
+    (review) => review.userId === session?.user.id && review.isFavourite
   );
 
   return (
@@ -134,7 +130,7 @@ async function BookComponent({
             {book.reviews.length !== 0 ? (
               <BookReviews
                 sortedReviews={sortedReviews}
-                userId={session?.user.userId}
+                userId={session?.user.id}
               />
             ) : (
               <div className="px-6 mt-4 text-lg text-[#a0a8b7]">
@@ -150,7 +146,7 @@ async function BookComponent({
           <ReviewForm
             book={book}
             editReview={editReview}
-            userId={session?.user.userId}
+            userId={session?.user.id}
           />
         </div>
 

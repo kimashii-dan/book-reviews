@@ -16,7 +16,7 @@ export default function ButtonToAuthor({ author }: { author: string }) {
   return (
     <Button
       variant="ghost"
-      className="hover:bg-transparent hover:text-slate-400 text-lg font-semibold italic text-slate-400 underline"
+      className="m-0 p-0 hover:bg-transparent hover:text-slate-400 text-lg font-semibold italic text-slate-400 underline"
       onClick={() => handleClick()}
     >
       {author}

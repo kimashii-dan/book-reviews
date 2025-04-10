@@ -56,6 +56,7 @@ export default function SignIn() {
           form.reset();
           toast("Successful sign-in");
           router.push("/");
+          router.refresh();
         },
         onError: (ctx) => {
           toast(ctx.error.message, {
@@ -83,7 +84,7 @@ export default function SignIn() {
   };
 
   return (
-    <Card className="w-full max-w-sm mx-auto">
+    <Card className="w-full max-w-md mx-auto text-[#e4e6eb] bg-[#1c1f26] border-[#292e38]">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>
@@ -93,7 +94,10 @@ export default function SignIn() {
 
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -101,7 +105,11 @@ export default function SignIn() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
+                    <Input
+                      className="border-[#292e38] border-2"
+                      placeholder="Enter your email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,25 +123,27 @@ export default function SignIn() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
+                      className="border-[#292e38] border-2"
                       type="password"
                       placeholder="Enter your password"
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
+                  <div className=" mt-1">
+                    <Link className="underline text-sm" href="/forgot-password">
+                      Forgot password?
+                    </Link>
+                  </div>
                 </FormItem>
               )}
             />
-            <div className="mb-5 mt-1">
-              <Link
-                className="underline text-sm text-blue-900"
-                href="/forgot-password"
-              >
-                Forgot password?
-              </Link>
-            </div>
 
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full primary-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <Loader2 className="animate-spin" size={48} />
               ) : (
@@ -150,7 +160,6 @@ export default function SignIn() {
 
         <Button
           className="w-full"
-          variant={"outline"}
           onClick={() => signInWithGoogle()}
           disabled={isSubmitting}
         >
@@ -164,7 +173,7 @@ export default function SignIn() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           Don&apos;t have an account yet?{" "}
-          <Link href="/sign-up" className="text-primary hover:underline">
+          <Link href="/sign-up" className=" hover:underline text-white">
             Sign up
           </Link>
         </p>

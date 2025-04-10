@@ -44,10 +44,10 @@ export default function Header() {
                   pathname === "/profile" ? "text-black" : "text-gray-400"
                 }
               >
-                {session.user.userImage ? (
+                {session.user.image ? (
                   <div className="w-8 h-8 rounded-full overflow-hidden relative">
                     <Image
-                      src={session.user.userImage}
+                      src={session.user.image}
                       alt="Your avatar"
                       fill
                       className="object-cover"

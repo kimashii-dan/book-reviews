@@ -30,7 +30,7 @@ const EditProfileDialog = dynamic(
 async function ProfileComponent() {
   const session: Session | null = await getServerSession();
   if (!session) return redirect("/sign-in");
-  const user = await userService.getUser(session.user.userId);
+  const user = await userService.getUser(session.user.id);
 
   return (
     <div className="flex flex-row justify-between w-[650px] mx-auto py-8">

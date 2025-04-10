@@ -87,9 +87,9 @@ function SideHeader({
               size="lg"
             >
               <div className="w-8 h-8 rounded-full overflow-hidden relative flex items-center justify-center">
-                {session.user.userImage ? (
+                {session.user.image ? (
                   <Image
-                    src={session.user.userImage}
+                    src={session.user.image}
                     alt="Your avatar"
                     fill
                     className="object-cover"
@@ -103,11 +103,9 @@ function SideHeader({
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">
-                  {session.user.userName}
+                  {session.user.name}
                 </span>
-                <span className="truncate text-xs">
-                  {session.user.userEmail}
-                </span>
+                <span className="truncate text-xs">{session.user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -121,9 +119,9 @@ function SideHeader({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <div className="w-8 h-8 rounded-full overflow-hidden relative flex items-center justify-center">
-                  {session.user.userImage ? (
+                  {session.user.image ? (
                     <Image
-                      src={session.user.userImage}
+                      src={session.user.image}
                       alt="Your avatar"
                       fill
                       className="object-cover"
@@ -137,11 +135,9 @@ function SideHeader({
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
-                    {session.user.userName}
+                    {session.user.name}
                   </span>
-                  <span className="truncate text-xs">
-                    {session.user.userEmail}
-                  </span>
+                  <span className="truncate text-xs">{session.user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -152,7 +148,7 @@ function SideHeader({
                   className="w-full flex gap-2 items-center"
                   href="/profile"
                 >
-                  {session.user.userIsVerified ? (
+                  {session.user.emailVerified ? (
                     <BadgeCheck />
                   ) : (
                     <BadgeAlert color="red" />
