@@ -31,7 +31,7 @@ export default function ReviewForm({
   userId,
 }: {
   book: BookWithReviewsType;
-  editReview?: CreateReviewType;
+  editReview?: CreateReviewType | null;
   userId: string | undefined;
 }) {
   const router = useRouter();

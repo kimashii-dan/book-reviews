@@ -19,7 +19,7 @@ export default function BookReviews({
   sortedReviews,
   userId,
 }: {
-  sortedReviews: ReviewWithBookType[];
+  sortedReviews: ReviewWithBookType[] | null;
   userId: string | undefined;
 }) {
   return (
@@ -29,7 +29,7 @@ export default function BookReviews({
       className="w-full duration-100"
     >
       <CarouselContent className="my-5 h-[225px] mb-3">
-        {sortedReviews.map((review) => (
+        {sortedReviews?.map((review) => (
           <CarouselItem key={review.id} className="basis-1/2 ">
             <Card className="h-full gap-3 bg-[#1c1f26] border-[#292e38] border-2 text-[#e4e6eb]">
               <CardHeader>

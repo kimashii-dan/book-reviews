@@ -1,6 +1,3 @@
-import { SkeletonBook } from "@/components/loadingUI/SkeletonBook";
-import BackButton from "@/components/BackButton";
-import { Suspense } from "react";
 import React from "react";
 import {
   Card,
@@ -21,35 +18,16 @@ import { getServerSession } from "@/app/actions";
 import dynamic from "next/dynamic";
 import ButtonToAuthor from "@/components/ButtonToAuthor";
 
-export default async function BookPage({
-  params,
-}: {
-  params: Promise<{ [key: string]: string | undefined }>;
-}) {
-  return (
-    <div className="flex flex-col justify-center items-center w-9/12 mx-auto  ">
-      <div className="w-full text-left my-5">
-        <BackButton />
-      </div>
-
-      <Suspense fallback={<SkeletonBook />}>
-        <BookComponent params={params} />
-      </Suspense>
-    </div>
-  );
-}
-
 const ReviewForm = dynamic(() => import("@/components/ReviewForm"), {
   loading: () => <div>Loading review form...</div>,
 });
 
-async function BookComponent({
+export default async function BookComponent({
   params,
 }: {
   params: Promise<{ [key: string]: string | undefined }>;
 }) {
   const { id } = await params;
-
   if (!id) return <div>Book not found</div>;
 
   const [session, bookWithReviews]: [
@@ -62,20 +40,26 @@ async function BookComponent({
 
   const book: BookWithReviewsType | null =
     bookWithReviews || (await bookService.findAPIBookById(id));
-
   if (!book) return <div>Book not found</div>;
 
-  const editReview = book.reviews.find(
-    (review) => review.userId === session?.user.id
-  );
+  let editReview = null;
+  let sortedReviews = null;
+  let isFavourite = null;
 
-  const sortedReviews = book.reviews.sort((a, b) =>
-    a.userId === session?.user.id ? -1 : b.userId === session?.user.id ? 1 : 0
-  );
+  if (session) {
+    editReview = book.reviews.find(
+      (review) => review.userId === session?.user.id
+    );
+    sortedReviews = book.reviews.sort((a, b) =>
+      a.userId === session?.user.id ? -1 : b.userId === session?.user.id ? 1 : 0
+    );
 
-  const isFavourite = book.reviews.some(
-    (review) => review.userId === session?.user.id && review.isFavourite
-  );
+    isFavourite = book.reviews.some(
+      (review) => review.userId === session?.user.id && review.isFavourite
+    );
+  } else {
+    sortedReviews = book.reviews;
+  }
 
   return (
     <>

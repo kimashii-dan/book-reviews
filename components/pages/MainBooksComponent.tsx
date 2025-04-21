@@ -1,39 +1,7 @@
-import { SkeletonBookList } from "@/components/loadingUI/SkeletonBookList";
-import React, { Suspense } from "react";
-import { Book } from "@prisma/client";
-import LibraryBookCard from "@/components/LibraryBookCard";
 import { bookService } from "@/app/services/book.service";
+import { Book } from "@prisma/client";
 import dynamic from "next/dynamic";
-
-const SearchComponent = dynamic(() => import("@/components/SearchComponent"), {
-  loading: () => <div>Loading search input...</div>,
-});
-
-export default async function Books(props: {
-  searchParams?: Promise<{
-    searchBy?: string;
-    query?: string;
-    page?: string;
-  }>;
-}) {
-  const searchParams = await props.searchParams;
-  const searchBy = searchParams?.searchBy || "";
-  const query = searchParams?.query || "";
-  const page = Number(searchParams?.page || 1);
-
-  return (
-    <div className="flex flex-col justify-center items-center w-9/12 mx-auto gap-8 ">
-      <SearchComponent query={query} searchBy={searchBy} />
-
-      <Suspense
-        key={`${searchBy}-${query}-${page}`}
-        fallback={<SkeletonBookList />}
-      >
-        <BooksComponent query={query} page={page} searchBy={searchBy} />
-      </Suspense>
-    </div>
-  );
-}
+import LibraryBookCard from "../LibraryBookCard";
 
 const PaginationComponent = dynamic(
   () => import("@/components/PaginationComponent"),
@@ -42,7 +10,7 @@ const PaginationComponent = dynamic(
   }
 );
 
-async function BooksComponent({
+export default async function MainBooksComponent({
   searchBy,
   query,
   page,
