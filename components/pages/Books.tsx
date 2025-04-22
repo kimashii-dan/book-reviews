@@ -1,16 +1,9 @@
 import { bookService } from "@/app/services/book.service";
 import { Book } from "@prisma/client";
-import dynamic from "next/dynamic";
-import LibraryBookCard from "../LibraryBookCard";
+import BookCard from "../BookCard";
+import PaginationBooks from "../PaginationBooks";
 
-const PaginationComponent = dynamic(
-  () => import("@/components/PaginationComponent"),
-  {
-    loading: () => <div>Loading pagination...</div>,
-  }
-);
-
-export default async function MainBooksComponent({
+export default async function Books({
   searchBy,
   query,
   page,
@@ -55,12 +48,12 @@ export default async function MainBooksComponent({
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 w-full">
         {books?.map((book: Book, index) => (
           <div key={index} className="max-w-[350px] mx-auto w-full">
-            <LibraryBookCard book={book} />
+            <BookCard book={book} />
           </div>
         ))}
       </div>
       {query && (
-        <PaginationComponent
+        <PaginationBooks
           totalPages={totalResults / limit}
           currentPage={Number(page)}
           baseUrl={`/books?searchBy=${searchBy}&query=${query}`}

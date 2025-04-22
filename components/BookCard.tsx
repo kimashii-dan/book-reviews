@@ -5,7 +5,7 @@ import { Book } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function LibraryBookCard({ book }: { book: Book }) {
+export default function BookCard({ book }: { book: Book }) {
   return (
     <Card className="flex flex-col items-center p-4 gap-4 w-full mb-4 text-[#e4e6eb] bg-[#1c1f26] border-[#292e38] border-2">
       <div className="w-full text-center">

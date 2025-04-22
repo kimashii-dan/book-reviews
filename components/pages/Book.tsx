@@ -13,16 +13,19 @@ import { BookWithReviewsType, Session } from "@/app/types";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { bookService } from "@/app/services/book.service";
-import BookReviews from "@/components/BookReviews";
 import { getServerSession } from "@/app/actions";
 import dynamic from "next/dynamic";
 import ButtonToAuthor from "@/components/ButtonToAuthor";
 
-const ReviewForm = dynamic(() => import("@/components/ReviewForm"), {
+const FormReview = dynamic(() => import("../FormReview"), {
   loading: () => <div>Loading review form...</div>,
 });
 
-export default async function BookComponent({
+const BookReviews = dynamic(() => import("../BookReviews"), {
+  loading: () => <div>Loading reviews...</div>,
+});
+
+export default async function Book({
   params,
 }: {
   params: Promise<{ [key: string]: string | undefined }>;
@@ -127,7 +130,7 @@ export default async function BookComponent({
 
       <div className="w-full max-w-[1800px] mx-auto  relative">
         <div className={`${!session ? "blur-sm" : ""}`}>
-          <ReviewForm
+          <FormReview
             book={book}
             editReview={editReview}
             userId={session?.user.id}

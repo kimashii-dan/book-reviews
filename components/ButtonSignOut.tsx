@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2, LogOut } from "lucide-react";
 
-export default function SignOutButton() {
+export default function ButtonSignOut() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

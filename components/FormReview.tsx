@@ -3,9 +3,9 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import StarRating from "./StarRating";
+import StarRating from "./RatingStar";
 import { Textarea } from "./ui/textarea";
-import StatusSelector from "./StatusSelector";
+import StatusSelector from "./SelectorStatus";
 import {
   Card,
   CardContent,
@@ -16,16 +16,13 @@ import {
 import { submitReview } from "@/app/actions";
 import { Button } from "./ui/button";
 import { Loader2, Heart } from "lucide-react";
-import { BookWithReviewsType, CreateReviewType } from "@/app/types";
+import {
+  BookWithReviewsType,
+  CreateReviewType,
+  FormReviewType,
+} from "@/app/types";
 
-export type ReviewFormType = {
-  rating: number;
-  comment: string;
-  status: string;
-  isFavourite: boolean;
-};
-
-export default function ReviewForm({
+export default function FormReview({
   book,
   editReview,
   userId,
@@ -35,7 +32,7 @@ export default function ReviewForm({
   userId: string | undefined;
 }) {
   const router = useRouter();
-  const [review, setReview] = useState<ReviewFormType>({
+  const [review, setReview] = useState<FormReviewType>({
     rating: editReview?.rating ?? 0,
     comment: editReview?.comment ?? "",
     status: editReview?.status ?? "reading",
@@ -45,7 +42,7 @@ export default function ReviewForm({
   const [isPending, startTransition] = useTransition();
 
   const handleChange = (
-    name: keyof ReviewFormType,
+    name: keyof FormReviewType,
     value: string | number | boolean
   ) => {
     setReview((prev) => ({

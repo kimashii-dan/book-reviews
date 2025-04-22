@@ -1,3 +1,4 @@
+import { FormReviewType } from "@/app/types";
 import {
   Select,
   SelectContent,
@@ -7,17 +8,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ReviewFormType } from "./ReviewForm";
 
-type StatusSelectorProps = {
+type SelectorStatusProps = {
   status: string;
-  handleChange: (name: keyof ReviewFormType, value: string | number) => void;
+  handleChange: (name: keyof FormReviewType, value: string | number) => void;
 };
 
-export default function StatusSelector({
+export default function SelectorStatus({
   status,
   handleChange,
-}: StatusSelectorProps) {
+}: SelectorStatusProps) {
   return (
     <Select
       onValueChange={(value) => handleChange("status", value)}

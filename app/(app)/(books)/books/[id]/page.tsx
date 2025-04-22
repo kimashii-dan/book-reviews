@@ -1,9 +1,7 @@
-import BackButton from "@/components/BackButton";
+import ButtonGoBack from "@/components/ButtonGoBack";
 import dynamic from "next/dynamic";
 
-const BookComponent = dynamic(
-  () => import("../../../../../components/pages/BookComponent")
-);
+const Book = dynamic(() => import("../../../../../components/pages/Book"));
 
 export default async function BookPage({
   params,
@@ -13,10 +11,9 @@ export default async function BookPage({
   return (
     <div className="flex flex-col justify-center items-center w-9/12 mx-auto  ">
       <div className="w-full text-left my-5">
-        <BackButton />
+        <ButtonGoBack />
       </div>
-
-      <BookComponent params={params} />
+      <Book params={params} />
     </div>
   );
 }

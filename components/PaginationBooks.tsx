@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-export default function PaginationComponent({
+export default function PaginationBooks({
   currentPage,
   baseUrl,
   totalPages,

@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/app/actions";
-import UserBooksComponent from "@/components/pages/UserBooksComponent";
+import dynamic from "next/dynamic";
+
+const UserBooks = dynamic(
+  () => import("../../../../components/pages/UserBooks")
+);
 
 export default async function FavouritePage() {
   const session = await getServerSession();
@@ -11,7 +15,7 @@ export default async function FavouritePage() {
         🌟Favourite books
       </h1>
 
-      <UserBooksComponent category={"favourites"} userId={session.user.id} />
+      <UserBooks category={"favourites"} userId={session.user.id} />
     </div>
   );
 }

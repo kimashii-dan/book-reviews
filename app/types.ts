@@ -51,7 +51,12 @@ type UserBooksType = Prisma.ReviewGetPayload<{
   };
 }>;
 
-type Filter = "rating" | "reviewCount" | "publishedDate" | "";
+type FormReviewType = {
+  rating: number;
+  comment: string;
+  status: string;
+  isFavourite: boolean;
+};
 
 export type {
   CreateReviewType,
@@ -59,7 +64,7 @@ export type {
   BookAPIType,
   BookGoogleAPIType,
   Session,
-  Filter,
   UserBooksType,
   ReviewWithBookType,
+  FormReviewType,
 };

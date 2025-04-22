@@ -35,8 +35,9 @@ import {
   Search,
   UserCircle2,
 } from "lucide-react";
-import SignOutButton from "./SignOutButton";
+
 import { Session } from "@/app/types";
+import ButtonSignOut from "./ButtonSignOut";
 
 export default function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
@@ -158,7 +159,7 @@ function SideHeader({
               </Button>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-[#292e38]" />
-            <SignOutButton />
+            <ButtonSignOut />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
@@ -281,7 +282,7 @@ function SideFooter({ session }: { session: Session | null }) {
     <SidebarMenu>
       <SidebarMenuItem>
         {session ? (
-          <SignOutButton />
+          <ButtonSignOut />
         ) : (
           <Button
             className=" w-full bg-[#1e2531] border-none"

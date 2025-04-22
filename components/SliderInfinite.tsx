@@ -17,7 +17,7 @@ const images = [
   "/images/war_and_peace.jpg",
 ];
 
-export default function InfiniteSlider() {
+export default function SliderInfinite() {
   return (
     <Carousel
       plugins={[

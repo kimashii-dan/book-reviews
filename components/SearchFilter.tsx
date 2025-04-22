@@ -5,7 +5,6 @@ import { Input } from "./ui/input";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useTransition, useState } from "react";
-import BackButton from "./BackButton";
 import {
   Select,
   SelectContent,
@@ -15,8 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import ButtonGoBack from "./ButtonGoBack";
 
-export default function SearchComponent({
+export default function SearchFilter({
   query: initialQuery,
   searchBy: initialSearchBy,
 }: {
@@ -95,7 +95,7 @@ export default function SearchComponent({
 
       {search.searchBy && search.query && (
         <div className="w-full text-left">
-          <BackButton />
+          <ButtonGoBack />
         </div>
       )}
     </>

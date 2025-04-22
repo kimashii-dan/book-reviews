@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function UserBookCard({ review }: { review: UserBooksType }) {
+export default function BookUserCard({ review }: { review: UserBooksType }) {
   return (
     <Card className="flex flex-col items-center p-4 gap-4 w-full mb-4 text-[#e4e6eb] bg-[#1c1f26] border-[#292e38] border-2">
       <div className="w-full text-center">

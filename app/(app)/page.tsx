@@ -1,9 +1,12 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
-const InfiniteSlider = dynamic(() => import("@/components/InfiniteSlider"), {
-  loading: () => <div>Loading slider...</div>,
-});
+const SliderInfinite = dynamic(
+  () => import("../../components/SliderInfinite"),
+  {
+    loading: () => <div>Loading slider...</div>,
+  }
+);
 
 export default async function Page() {
   return (
@@ -19,7 +22,7 @@ export default async function Page() {
             </p>
           </div>
 
-          <InfiniteSlider />
+          <SliderInfinite />
         </div>
       </div>
 

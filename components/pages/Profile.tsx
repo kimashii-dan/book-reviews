@@ -1,20 +1,10 @@
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import { userService } from "@/app/services/user.service";
 import { Check, Mail } from "lucide-react";
+import AvatarUploader from "../AvatarUploader";
+import DialogEdit from "../DialogEdit";
 
-const AvatarUploader = dynamic(() => import("@/components/AvatarUploader"), {
-  loading: () => <div>Loading avatar uploader...</div>,
-});
-
-const EditProfileDialog = dynamic(
-  () => import("@/components/EditProfileDialog"),
-  {
-    loading: () => <div>Loading dialog...</div>,
-  }
-);
-
-export default async function ProfileComponent({ userId }: { userId: string }) {
+export default async function Profile({ userId }: { userId: string }) {
   const user = await userService.getUser(userId);
 
   return (
@@ -63,7 +53,7 @@ export default async function ProfileComponent({ userId }: { userId: string }) {
           </li>
 
           <div className="mt-auto">
-            <EditProfileDialog user={user} />
+            <DialogEdit user={user} />
           </div>
         </ul>
       </div>

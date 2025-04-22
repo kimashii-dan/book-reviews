@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/app/actions";
 import dynamic from "next/dynamic";
-const ProfileComponent = dynamic(
-  () => import("../../../components/pages/ProfileComponent")
-);
+
+const Profile = dynamic(() => import("../../../components/pages/Profile"));
 export default async function ProfilePage() {
   const session = await getServerSession();
   if (!session) redirect("/sign-in");
 
-  return <ProfileComponent userId={session.user.id} />;
+  return <Profile userId={session.user.id} />;
 }

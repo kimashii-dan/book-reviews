@@ -1,6 +1,6 @@
 import { bookService } from "@/app/services/book.service";
 import { UserBooksType } from "@/app/types";
-import UserBookCard from "../UserBookCard";
+import BookUserCard from "../BookUserCard";
 
 export default async function UserBooksComponent({
   userId,
@@ -31,7 +31,7 @@ export default async function UserBooksComponent({
       <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 w-full">
         {reviews.map((review: UserBooksType, index) => (
           <div key={index} className="max-w-[350px] mx-auto w-full">
-            <UserBookCard review={review} />
+            <BookUserCard review={review} />
           </div>
         ))}
       </div>

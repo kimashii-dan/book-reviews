@@ -1,13 +1,13 @@
+import { FormReviewType } from "@/app/types";
 import { Star } from "lucide-react";
 import React from "react";
-import { ReviewFormType } from "./ReviewForm";
 
-type StarRatingType = {
+type RatingStarType = {
   rating: number;
-  handleChange: (name: keyof ReviewFormType, value: string | number) => void;
+  handleChange: (name: keyof FormReviewType, value: string | number) => void;
 };
 
-export default function StarRating({ rating, handleChange }: StarRatingType) {
+export default function RatingStar({ rating, handleChange }: RatingStarType) {
   return (
     <div className="flex">
       {[1, 2, 3, 4, 5].map((star) => (

@@ -20,7 +20,7 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useRouter } from "next/navigation";
 
-export default function EditProfileDialog({
+export default function DialogEdit({
   user,
 }: {
   user: User | null | undefined;

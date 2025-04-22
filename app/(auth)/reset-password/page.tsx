@@ -31,12 +31,12 @@ import { toast } from "sonner";
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={<Loading />}>
-      <ResetPasswordComponent />
+      <ResetPassword />
     </Suspense>
   );
 }
 
-function ResetPasswordComponent() {
+function ResetPassword() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || undefined;
   const error = searchParams.get("error");
