@@ -1,5 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebarWrapper from "@/components/AppSidebarWrapper";
+import { Suspense } from "react";
+import SkeletonSidebar from "@/components/loadingUI/SkeletonSidebar";
 
 export default async function RootLayout({
   children,
@@ -8,7 +10,10 @@ export default async function RootLayout({
 }>) {
   return (
     <SidebarProvider>
-      <AppSidebarWrapper />
+      <Suspense fallback={<SkeletonSidebar />}>
+        <AppSidebarWrapper />
+      </Suspense>
+
       <main className="w-full">
         <SidebarTrigger />
         {children}

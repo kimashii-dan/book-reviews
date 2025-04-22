@@ -9,8 +9,7 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: "Books reviews",
-  description:
-    "can we talk about political and economic state of the world right now??🤓",
+  description: "Find and review any book you want",
 };
 
 export default function RootLayout({
